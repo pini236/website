@@ -25,3 +25,21 @@ export function blend(from: Float32Array, to: Float32Array, t: number): Float32A
   for (let i = 0; i < from.length; i++) out[i] = from[i] + (to[i] - from[i]) * k;
   return out;
 }
+
+export const SWIRL_RADIUS = 2.4;
+
+// Mirrors the vertex shader in Particles.tsx, so a morph can be retargeted from where it is now.
+export function swirled(from: Float32Array, to: Float32Array, seeds: Float32Array, t: number, time: number): Float32Array {
+  const p = Math.min(1, Math.max(0, t));
+  const k = ease(p);
+  const burst = Math.sin(Math.PI * p);
+  const out = new Float32Array(from.length);
+  for (let i = 0; i < from.length; i += 3) {
+    const a = seeds[i] * Math.PI * 2 + time * 0.6 + burst * 3;
+    const r = SWIRL_RADIUS * burst * (0.25 + 0.75 * seeds[i + 1]);
+    out[i] = from[i] + (to[i] - from[i]) * k + Math.cos(a) * r;
+    out[i + 1] = from[i + 1] + (to[i + 1] - from[i + 1]) * k + (seeds[i + 2] - 0.5) * 1.2 * r;
+    out[i + 2] = from[i + 2] + (to[i + 2] - from[i + 2]) * k + Math.sin(a) * r;
+  }
+  return out;
+}

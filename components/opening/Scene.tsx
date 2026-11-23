@@ -6,7 +6,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 import type { Group } from "three";
 import { BUSINESSES, type BusinessId } from "@/lib/businesses";
 import { capDelta } from "@/lib/morph";
-import { BusinessModel } from "./BusinessModel";
+import { Morph } from "./Particles";
 import { Stage } from "./Stage";
 
 type Pointer = { x: number; y: number };
@@ -51,7 +51,7 @@ export default function Scene({ business, reducedMotion }: { business: BusinessI
       <directionalLight position={[-5, 3, -4]} intensity={1.4} color="#6FA8FF" />
       <pointLight position={[3, 1, 3.5]} intensity={14} distance={10} color={accent} />
       <Rig pointer={pointer} still={reducedMotion}>
-        <BusinessModel business={business} visible={1} />
+        <Morph business={business} reducedMotion={reducedMotion} pointer={pointer} />
       </Rig>
       <EffectComposer>
         <Bloom intensity={1.2} luminanceThreshold={0.6} mipmapBlur />
