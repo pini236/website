@@ -1,6 +1,6 @@
 # Rooftop AI Studio website: design
 
-Date: 2026-11-23. Status: waiting for Pini's approval.
+Date: 2026-11-23. Status: approved by Pini on 2026-11-23.
 
 ## Intent
 
@@ -26,6 +26,7 @@ The site speaks to a business owner, in results, about his own business. Technol
 ## Goals
 
 - The first screen asks the visitor what he runs, and from then on the 3D scene and every line of copy are about that business.
+- A visitor whose business is not one of the four ready-made ones types what he runs, and an AI builds his version of the page in front of him.
 - Several distinct spectacular moments, not one hero effect (see "The page").
 - A real AI on the site that gives the visitor something of value he can keep: a personal plan for his business.
 - Real work shown honestly, each piece labelled as client work, own product or prototype.
@@ -58,6 +59,16 @@ Three concepts were sketched and shown to Pini as clickable mockups:
 
 **Picked:** A as the spine, in real 3D, re-aimed from "pick a service" to "pick your business". C becomes the work section. B becomes the short "how it works" film. A throwaway 3D prototype of the opening confirmed the direction; Pini asked for a far more spectacular build, a 3D model that changes per business, and more than one spectacular moment.
 
+**The page that builds itself (added 2026-11-23, picked by Pini on Claude's recommendation).** Three ways to handle a visitor's own business were weighed:
+
+| Way | Idea | Trade-off |
+|---|---|---|
+| Ready-made only | Five prepared versions, as first designed | Instant and polished; a generic page for everyone outside the four business types |
+| Bounded generation | The AI writes the copy and picks from prepared colours, models and design sets | Personal for any business; a short wait and a small cost per visitor; quality stays hand-made |
+| Free generation | The AI invents layout and visuals live | Most impressive on paper; looks worse than the hand-made scenes and can fail in public |
+
+**Picked:** bounded generation, next to the four ready-made businesses. The ready-made ones stay as the instant, polished default and as the fallback.
+
 On wording, "make your business ready for AI" was considered and replaced by the face-and-brain promise, because "ready" sounds like preparation, not results, and does not cover games, brands and videos.
 
 ## The page
@@ -66,8 +77,10 @@ One long home page made of scenes, in the order a business owner asks his questi
 
 ### 1. Opening: the living model
 
-- Headline: the promise. Under it: "Show me yours. I run a…" with choices: Restaurant, Clinic, Shop, Studio or agency, Something else.
-- The 3D subject is a **detailed miniature of that business**, floating in space: a restaurant, a clinic, a shop, a studio. "Something else" shows an abstract building.
+- Headline: the promise. Under it: "Show me yours. I run a…" with choices: Restaurant, Clinic, Shop, Studio or agency, and a text box: "Something else? Tell me what you run."
+- **Typed business.** The visitor types a few words ("a dog-grooming salon"). A real AI returns, for that business: the headline, three face results and three brain results, an accent colour from a prepared set, and which prepared 3D model and design set fits best. The page then morphs to that version with the same particle effect as the ready-made ones. While the AI works, the model is already tearing apart into particles, so the wait is part of the show.
+- The AI only fills prepared slots. It never invents layout, 3D or free colours.
+- The 3D subject is a **detailed miniature of that business**, floating in space: a restaurant, a clinic, a shop, a studio. A typed business gets the closest of these, or an abstract building when none fits.
 - The model is made of solid stylised geometry plus a dense field of light particles. Changing business makes the model tear apart into particles, swirl, and re-form as the new business. This is the signature moment.
 - The mouse orbits the model and pushes the particles.
 - The accent colour, lighting and all copy on the page change with the business.
@@ -80,11 +93,11 @@ One long home page made of scenes, in the order a business owner asks his questi
 
 ### 3. Your plan, live (the real AI)
 
-- The visitor types one sentence about his business and its name.
+- The visitor types one sentence about his business and its name. If he already typed his business in the opening, it is filled in and he only adds the name.
 - A real AI writes, as he watches, a short personal plan: three face moves, three brain moves, and the one thing to do first.
 - While it writes, the 3D model reacts: the business name appears on the model's sign and the palette shifts.
 - The result is a clean card he can save or share, with a button: "Send this plan to Pini on WhatsApp".
-- Protection: limits per visitor, a daily spending cap, and nothing personal stored. When the cap is reached or the AI is unavailable, the site shows a prepared plan for the chosen business type and says so.
+- Protection: limits per visitor, a daily spending cap, and nothing personal stored. When the cap is reached or the AI is unavailable, the site shows a prepared plan for the chosen business type and says so. The typed-business page in the opening runs under the same limits and cap; when it cannot run, the visitor gets the general ready-made version and is told so.
 
 ### 4. The work
 
@@ -127,7 +140,7 @@ One long home page made of scenes, in the order a business owner asks his questi
 ## Look
 
 - Base: deep indigo night `#0B0920`, ivory text `#F4EFFF`.
-- Accent follows the business: ember `#FF7A45` (restaurant), mint `#3DD6C4` (clinic), pink `#FF4F9A` (shop), violet `#8C7BFF` (studio), gold `#FFC14D` (default).
+- Accent follows the business: ember `#FF7A45` (restaurant), mint `#3DD6C4` (clinic), pink `#FF4F9A` (shop), violet `#8C7BFF` (studio), gold `#FFC14D` (default). A typed business gets one of these five, chosen by the AI.
 - Type: Syne (wide, heavy) for headlines, Instrument Sans for reading.
 - Boldness is spent on the 3D and motion. Layout and text around it stay quiet and left-aligned.
 
@@ -135,16 +148,16 @@ One long home page made of scenes, in the order a business owner asks his questi
 
 - Next.js with TypeScript, because Pini's other projects use it and the text must be findable by search engines.
 - React Three Fiber with custom shaders and post-processing for the 3D; GSAP ScrollTrigger and Lenis for scroll-driven motion.
-- Hosted on Vercel, where Pini's other sites live. The AI plan runs as a small streaming server function calling a fast, low-cost Claude model.
+- Hosted on Vercel, where Pini's other sites live. The AI plan runs as a small streaming server function calling a fast, low-cost Claude model. The typed-business page uses the same kind of function, returning a fixed structure (headline, six results, colour name, model name, design-set name) that is checked before the page uses it.
 - 3D models: start from free-licence stylised model kits restyled with custom materials, and test AI-generated models against them. Quality is judged at milestone 1.
 - Contact: a WhatsApp link with a prefilled message.
-- Tests: few and meaningful, on the AI plan endpoint and its limits.
+- Tests: few and meaningful, on the two AI endpoints and their limits.
 
 ## Milestones
 
 0. **Google Play pages first** (built): a simple studio home page, privacy policy, contact and account-deletion request, live on Vercel. Contact is by email until the WhatsApp number is given.
 1. **The opening scene alone**, at full quality, with per-business models and the particle morph. Pini approves the look before anything else is built.
-2. The dive and the live AI plan.
+2. The dive, the live AI plan and the typed-business page.
 3. The work gallery with the real projects, then scenes 5 to 8.
 4. Full launch.
 
@@ -165,7 +178,8 @@ One long home page made of scenes, in the order a business owner asks his questi
 ## Calls made after the builder review (Claude's, for Pini to check)
 
 - **Model style.** Stylised, glowing architectural miniatures with real detail, not low-poly toys and not photo-real. The rejected prototype is at `.superpowers/brainstorm/75588-1795434497/content/hero-prototype-v3.html`: a ring of flat placeholder cards around a glowing blob. It fell short because the model was abstract, identical for every business, and low in detail. Milestone 1 settles the style.
-- **Designs inside the dive.** One invented brand per business type (restaurant, clinic, shop, studio). For each: a high-quality still of its website, its app and its brand, and one short looping video. "Something else" uses a neutral set. That is 16 designed pieces and they are part of milestone 2.
+- **Designs inside the dive.** One invented brand per business type (restaurant, clinic, shop, studio). For each: a high-quality still of its website, its app and its brand, and one short looping video. A typed business that fits none of them uses a neutral set. That is 16 designed pieces and they are part of milestone 2.
+- **Typed business.** The AI picks the accent from the five existing colours and the model and design set from the prepared ones; "Something else" as a plain button is gone, and the neutral set and abstract building serve typed businesses that fit nothing. Text the visitor types is limited in length, and the AI is told to answer only about a business; anything else gets the general version.
 - **Phones.** Same content and order. The 3D scenes are replaced by pre-rendered video of the same scenes. The business picker, the live AI plan and the WhatsApp button must work on a phone.
 - **Hebrew typing.** Site copy is English, but visitors may type in Hebrew. The plan answers in the language typed, and the 3D sign and finale text use a typeface that includes Hebrew and handle right-to-left.
 - **Sharing the plan.** Download as an image and send by WhatsApp only. No share links, so nothing is stored on the server.
