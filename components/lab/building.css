@@ -1,20 +1,28 @@
-.bd { --acc: #ff7a45; position: relative; height: 100svh; min-height: 620px; overflow: hidden; background: #0c0a26; }
+.bd { --acc: #ff7a45; --p: 0; position: relative; height: 280svh; background: #0c0a26; }
+.bd-pin { position: sticky; top: 0; height: 100svh; min-height: 620px; overflow: hidden; }
 .bd-stage {
   position: absolute; right: -8vw; top: 52%; width: min(92vw, 125svh); aspect-ratio: 2400 / 1792; translate: 0 -50%;
   -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
 }
 .bd-stage img { position: absolute; inset: 0; width: 100%; height: 100%; }
-.bd-stage .on { -webkit-mask-image: radial-gradient(circle var(--r) at var(--mx) var(--my), #000 40%, transparent 100%); mask-image: radial-gradient(circle var(--r) at var(--mx) var(--my), #000 40%, transparent 100%); }
-.spot {
-  position: absolute; translate: -50% calc(-100% - 16px); white-space: nowrap; padding: 8px 16px; border-radius: 99px; opacity: 0;
-  background: var(--ivory); color: #16132e; font: 600 clamp(12px, 1.05vw, 16px) var(--font-body), sans-serif; box-shadow: 0 14px 40px -10px #000;
+.bd-stage .on {
+  --m: radial-gradient(circle var(--r) at var(--mx) var(--my), #000 40%, transparent 100%), linear-gradient(to top, #000 calc(var(--p) * 135% - 22%), transparent calc(var(--p) * 135%));
+  -webkit-mask-image: var(--m); mask-image: var(--m);
 }
-.spot::after { content: ""; position: absolute; left: 50%; top: 100%; width: 2px; height: 14px; margin-left: -1px; background: var(--ivory); }
+.bd-stage .life { opacity: 0; animation: bd-life2 10s ease-in-out infinite; }
+.bd-stage .life + .life { animation-name: bd-life3; }
+@keyframes bd-life2 { 0%, 22% { opacity: 0; } 32%, 90% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes bd-life3 { 0%, 56% { opacity: 0; } 66%, 90% { opacity: 1; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .bd-stage .life { animation: none; } }
 
 .bd-copy { position: absolute; z-index: 2; left: var(--pad); top: clamp(92px, 13svh, 140px); max-width: min(520px, 40vw); pointer-events: none; }
 .bd-copy .eyebrow { color: var(--acc); }
 .bd-copy h1 { font-size: clamp(38px, 5vw, 78px); }
-.bd-copy h1 em { color: var(--acc); }
+.bd-copy h1 { display: grid; }
+.bd-copy h1 span { grid-area: 1 / 1; }
+.bd-copy h1 em { display: block; color: var(--acc); }
+.was { opacity: calc(1 - var(--p) * 3); }
+.now { opacity: calc(var(--p) * 4 - 1.4); }
 .bd-lead { margin-top: 20px; max-width: 27ch; font-size: clamp(16px, 1.25vw, 19px); color: var(--soft); }
 .bd-hint { display: inline-flex; align-items: center; gap: 10px; margin-top: 26px; font-size: 14px; font-weight: 600; color: var(--ivory); }
 .bd-hint::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: #ffd2a8; box-shadow: 0 0 0 6px rgba(255, 122, 69, 0.25), 0 0 26px var(--acc); }

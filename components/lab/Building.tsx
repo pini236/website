@@ -1,17 +1,7 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef } from "react";
 import "./building.css";
-
-const SPOTS = [
-  { x: 62.5, y: 52, say: "A name people remember" },
-  { x: 39, y: 63, say: "A website that sells for you" },
-  { x: 66, y: 71, say: "Answers every customer, day and night" },
-  { x: 61, y: 39, say: "Knows your whole business" },
-  { x: 40, y: 39, say: "Does the boring work by itself" },
-  { x: 34.5, y: 73, say: "Your own app in their pocket" },
-  { x: 43, y: 17, say: "A film that shows who you are" },
-];
 
 export function Building() {
   const root = useRef<HTMLElement>(null);
@@ -20,7 +10,6 @@ export function Building() {
   useEffect(() => {
     const el = root.current!;
     const st = stage.current!;
-    const tags = st.querySelectorAll<HTMLElement>(".spot");
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
     let held = false;
     let tx = 0.5;
@@ -46,16 +35,15 @@ export function Building() {
       const k = still ? 1 : 0.12;
       x += (tx - x) * k;
       y += (ty - y) * k;
+      const box = el.getBoundingClientRect();
+      const p = Math.max(0, Math.min(1, -box.top / (box.height - innerHeight)));
+      el.style.setProperty("--p", p.toFixed(4));
       const w = st.clientWidth;
       const h = st.clientHeight;
       const R = Math.min(Math.max(140, w * 0.2), 300);
       st.style.setProperty("--mx", `${(x * w).toFixed(1)}px`);
       st.style.setProperty("--my", `${(y * h).toFixed(1)}px`);
       st.style.setProperty("--r", `${R}px`);
-      tags.forEach((tag, i) => {
-        const far = Math.hypot((SPOTS[i].x / 100 - x) * w, (SPOTS[i].y / 100 - y) * h) / R;
-        tag.style.opacity = Math.max(0, Math.min(1, 2.4 - far * 3.2)).toFixed(2);
-      });
       raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
@@ -67,24 +55,28 @@ export function Building() {
 
   return (
     <section ref={root} className="bd">
+      <div className="bd-pin">
       <div ref={stage} className="bd-stage" aria-hidden="true">
-        <img src="/lab/building-off.webp" alt="" />
+        <img src="/lab/building-scaffold.webp" alt="" />
         <img className="on" src="/lab/building-on.webp" alt="" />
-        {SPOTS.map((s) => (
-          <span key={s.say} className="spot" style={{ left: `${s.x}%`, top: `${s.y}%` } as CSSProperties}>
-            {s.say}
-          </span>
-        ))}
+        <img className="on life" src="/lab/building-life2.webp" alt="" />
+        <img className="on life" src="/lab/building-life3.webp" alt="" />
       </div>
 
       <div className="bd-copy">
         <p className="eyebrow">For business owners</p>
         <h1>
-          Your business,
-          <em>switched on.</em>
+          <span className="was">
+            Is your business
+            <em>still half built?</em>
+          </span>
+          <span className="now">
+            Your business,
+            <em>switched on.</em>
+          </span>
         </h1>
-        <p className="bd-lead">Everything your customers see, and everything that works for you behind it. Designed and built by one studio.</p>
-        <p className="bd-hint">Move the light</p>
+        <p className="bd-hint">Scroll</p>
+      </div>
       </div>
     </section>
   );
