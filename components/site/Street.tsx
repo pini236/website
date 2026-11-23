@@ -69,7 +69,7 @@ export function Street({ lang }: { lang: Lang }) {
   );
 
   return (
-    <section className="street" ref={root} data-act="scaf">
+    <section className="street" id="street" ref={root} data-act="scaf">
       <div className="pin">
         <div className="stage" aria-hidden="true">
           <video ref={build} src="/street/build.mp4" poster="/street/scaf.jpg" muted playsInline preload="auto" />

@@ -9,3 +9,8 @@ export const clock = (minutes: number) => {
   const m = ((Math.round(minutes) % 1440) + 1440) % 1440;
   return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
 };
+
+export const ease = (t: number) => {
+  const x = clamp01(t);
+  return x * x * (3 - 2 * x);
+};

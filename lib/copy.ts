@@ -29,11 +29,11 @@ export const COPY: Record<Lang, Copy> = {
     scroll: "Scroll",
     landing: ["You already did the hard part.", "Let's build the rest."],
     gap: {
-      head: "Your business is good. It just doesn't show yet.",
+      head: "Your business is open. Online, it still says “opening soon.”",
       beats: [
-        "People look for you on a phone before they ever reach your door.",
-        "That's where they decide. In seconds.",
-        "And when they finally write to you, it's eleven at night and nobody answers.",
+        "People look for you on a phone before they find your door.",
+        "They decide in seconds. The first look is all you get.",
+        "And when they do write to you, it's eleven at night and nobody answers.",
       ],
     },
     face: {
@@ -53,7 +53,7 @@ export const COPY: Record<Lang, Copy> = {
         "It knows what you know: prices, stock, who ordered what.",
         "Invoices, reminders, follow-ups. Done before you ask.",
       ],
-      ai: "Yes, it's AI. You won't need to care how.",
+      ai: "Yes, it's AI. You won't need to care how. Here's one night.",
     },
     day: {
       lens: "Move your mouse. See what's underneath.",
@@ -82,8 +82,8 @@ export const COPY: Record<Lang, Copy> = {
     scroll: "גללו",
     landing: ["את החלק הקשה כבר עשיתם.", "עכשיו נבנה את השאר."],
     gap: {
-      head: "העסק שלכם טוב. רק שעוד לא רואים את זה.",
-      beats: ["לפני שנכנסים אליכם בדלת, מחפשים אתכם בטלפון.", "שם מחליטים. תוך שניות.", "וכשסוף־סוף כותבים לכם, השעה אחת־עשרה בלילה ואין מי שיענה."],
+      head: "העסק שלכם פתוח. באינטרנט עדיין כתוב ״נפתח בקרוב״.",
+      beats: ["לפני שמגיעים לדלת, מחפשים אתכם בטלפון.", "מחליטים תוך שניות. המבט הראשון הוא כל מה שיש לכם.", "וכשכן כותבים לכם, השעה אחת־עשרה בלילה ואין מי שיענה."],
     },
     face: {
       head: "קודם כול, שייראה כמו מה שהוא באמת.",
@@ -93,7 +93,7 @@ export const COPY: Record<Lang, Copy> = {
       head: "ואז מדליקים את האור.",
       sub: "מאחורי הפנים החדשות, עסק שעונה, זוכר ועושה לבד את העבודה המשעממת.",
       items: ["כל לקוח מקבל תשובה. גם באחת־עשרה בלילה.", "הוא יודע מה שאתם יודעים: מחירים, מלאי, מי הזמין מה.", "חשבוניות, תזכורות, מעקבים. נעשה לפני שביקשתם."],
-      ai: "כן, זו בינה מלאכותית. לא תצטרכו להבין איך.",
+      ai: "כן, זו בינה מלאכותית. לא תצטרכו להבין איך. הנה לילה אחד.",
     },
     day: {
       lens: "הזיזו את העכבר. תראו מה מתחת.",

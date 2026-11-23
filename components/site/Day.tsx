@@ -56,7 +56,7 @@ export function Day({ lang }: { lang: Lang }) {
   }, []);
 
   return (
-    <section className="day" ref={root}>
+    <section className="day" id="day" ref={root}>
       <div className="pin">
         <div className="stage" aria-hidden="true">
           {PLATES.map((n, i) => (
@@ -66,7 +66,7 @@ export function Day({ lang }: { lang: Lang }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/street/xray.jpg" alt="" className="xray" />
         </div>
-        <output ref={time} className="clock" dir="ltr">
+        <output ref={time} className="dclock" dir="ltr">
           06:30
         </output>
         <p className="lens">{c.lens}</p>
@@ -111,16 +111,16 @@ export function Day({ lang }: { lang: Lang }) {
           <span className="ping on" style={at(0.52, 0.67)}>
             {c.supply.note}
           </span>
-          <div className="phone on" style={at(0.28, 0.46)}>
-            <p className="bubble ask">{c.noon.ask}</p>
-            <p className="bubble reply on" style={at(0.34, 0.46)}>
+          <div className="dphone on" style={at(0.28, 0.46)}>
+            <p className="dbubble ask">{c.noon.ask}</p>
+            <p className="dbubble reply on" style={at(0.34, 0.46)}>
               {c.noon.reply}
             </p>
           </div>
-          <div className="phone on" style={at(0.71, 0.86)}>
+          <div className="dphone on" style={at(0.71, 0.86)}>
             <small dir="ltr">{c.night.time}</small>
-            <p className="bubble ask">{c.night.ask}</p>
-            <p className="bubble reply on" style={at(0.76, 0.86)}>
+            <p className="dbubble ask">{c.night.ask}</p>
+            <p className="dbubble reply on" style={at(0.76, 0.86)}>
               {c.night.reply}
             </p>
           </div>
