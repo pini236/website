@@ -1,3 +1,8 @@
-# website
+# Rooftop AI Studio
 
-Personal developer website for my Google Play Console account.
+The website of Rooftop AI Studio (Pini Zolberg). Next.js, hosted on Vercel.
+
+```
+npm install
+npm run dev
+```
