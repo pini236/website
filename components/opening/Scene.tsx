@@ -1,12 +1,12 @@
 "use client";
 
-import { RoundedBox } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { useEffect, useRef, type ReactNode } from "react";
 import type { Group } from "three";
 import { BUSINESSES, type BusinessId } from "@/lib/businesses";
 import { capDelta } from "@/lib/morph";
+import { BusinessModel } from "./BusinessModel";
 
 type Pointer = { x: number; y: number };
 
@@ -21,7 +21,7 @@ function Rig({ pointer, still, children }: { pointer: { current: Pointer }; stil
     g.rotation.x += ((still ? 0 : pointer.current.y * 0.2) - g.rotation.x) * k;
   });
   return (
-    <group ref={group} position={[wide ? 1.9 : 0, 0, 0]} scale={wide ? 1 : 0.8}>
+    <group ref={group} position={[wide ? 1.95 : 0, 0, 0]} scale={wide ? 1 : 0.8}>
       {children}
     </group>
   );
@@ -46,9 +46,7 @@ export default function Scene({ business, reducedMotion }: { business: BusinessI
       <directionalLight position={[4, 6, 5]} intensity={2.2} color={accent} />
       <directionalLight position={[-5, 3, -4]} intensity={1.4} color="#6FA8FF" />
       <Rig pointer={pointer} still={reducedMotion}>
-        <RoundedBox args={[2, 2, 2]} radius={0.2}>
-          <meshStandardMaterial color="#1A1640" emissive={accent} emissiveIntensity={0.6} />
-        </RoundedBox>
+        <BusinessModel business={business} visible={1} />
       </Rig>
       <EffectComposer>
         <Bloom intensity={0.9} luminanceThreshold={0.6} mipmapBlur />
