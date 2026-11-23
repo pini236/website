@@ -8,7 +8,15 @@ export type Copy = {
   gap: { head: string; beats: string[] };
   face: { head: string; items: string[] };
   lights: { head: string; sub: string; items: string[]; ai: string };
-  day: { head: string; label: string; drag: string; moments: string[]; close: string };
+  day: {
+    lens: string;
+    morning: { title: string; orders: string[] };
+    noon: { title: string; ask: string; reply: string };
+    supply: { title: string; note: string };
+    night: { title: string; time: string; ask: string; reply: string };
+    brain: { head: string; body: string };
+    close: string;
+  };
   who: { head: string; body: string; sample: string };
   close: { head: string; body: string; button: string };
   foot: { built: string; privacy: string; remove: string; contact: string };
@@ -48,15 +56,12 @@ export const COPY: Record<Lang, Copy> = {
       ai: "Yes, it's AI. You won't need to care how.",
     },
     day: {
-      head: "Now watch one day.",
-      label: "An example day",
-      drag: "Drag the clock",
-      moments: [
-        "Three orders came in overnight. They're already on the list.",
-        "A customer asks about her delivery. Answered in a minute. Not by you.",
-        "The supplier order went out on its own.",
-        "You're home. The business is still answering.",
-      ],
+      lens: "Move your mouse. See what's underneath.",
+      morning: { title: "Morning. Three orders came in overnight.", orders: ["New order · pickup at 9:00", "New order · delivery", "New order · pickup at 10:30"] },
+      noon: { title: "A customer asks about her delivery. Answered in a minute. Not by you.", ask: "Where's my order?", reply: "On its way. About 15 minutes." },
+      supply: { title: "The supplier order went out on its own.", note: "Running low · order sent to supplier" },
+      night: { title: "You're home. The business is still answering.", time: "23:04", ask: "Are you open tomorrow?", reply: "From 7:00. Want me to set something aside for you?" },
+      brain: { head: "Under every window, one brain.", body: "Orders, answers, stock and invoices, all connected. That's what we build." },
       close: "You're still the heart of it. You're just not the whole staff anymore.",
     },
     who: {
@@ -91,10 +96,12 @@ export const COPY: Record<Lang, Copy> = {
       ai: "כן, זו בינה מלאכותית. לא תצטרכו להבין איך.",
     },
     day: {
-      head: "עכשיו תראו יום אחד.",
-      label: "יום לדוגמה",
-      drag: "גררו את השעון",
-      moments: ["שלוש הזמנות נכנסו בלילה. הן כבר ברשימה.", "לקוחה שואלת על המשלוח. קיבלה תשובה תוך דקה. לא מכם.", "ההזמנה לספק יצאה לבד.", "אתם בבית. העסק עדיין עונה."],
+      lens: "הזיזו את העכבר. תראו מה מתחת.",
+      morning: { title: "בוקר. שלוש הזמנות נכנסו בלילה.", orders: ["הזמנה חדשה · איסוף ב־9:00", "הזמנה חדשה · משלוח", "הזמנה חדשה · איסוף ב־10:30"] },
+      noon: { title: "לקוחה שואלת על המשלוח. קיבלה תשובה תוך דקה. לא מכם.", ask: "איפה ההזמנה שלי?", reply: "בדרך אליך. בערך רבע שעה." },
+      supply: { title: "ההזמנה לספק יצאה לבד.", note: "המלאי עומד להיגמר · ההזמנה נשלחה לספק" },
+      night: { title: "אתם בבית. העסק עדיין עונה.", time: "23:04", ask: "אתם פתוחים מחר?", reply: "מ־7:00. לשמור לך משהו בצד?" },
+      brain: { head: "מתחת לכל חלון, מוח אחד.", body: "הזמנות, תשובות, מלאי וחשבוניות, הכול מחובר. את זה אנחנו בונים." },
       close: "אתם עדיין הלב של העסק. רק כבר לא כל הצוות.",
     },
     who: {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { COPY, type Lang } from "@/lib/copy";
-import { OneDay } from "./OneDay";
+import { Day } from "./Day";
 import { Street } from "./Street";
 import "./site.css";
 
@@ -9,7 +9,8 @@ export function Home({ lang }: { lang: Lang }) {
   return (
     <main>
       <Street lang={lang} />
-      <OneDay lang={lang} />
+      <Day lang={lang} />
+      <p className="after">{c.day.close}</p>
       <section className="who">
         <h2>{c.who.head}</h2>
         <div>
