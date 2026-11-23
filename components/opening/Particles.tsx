@@ -10,7 +10,7 @@ import { BusinessModel } from "./BusinessModel";
 const MORPH = 2.2;
 const ARRIVAL = 2.6;
 const FADE = 0.3;
-const IDLE = 0.16;
+const IDLE = 0.1;
 const SAMPLES = 20000;
 
 const VERT = `attribute vec3 aFrom; attribute vec3 aTo; attribute vec3 aSeed;

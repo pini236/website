@@ -274,3 +274,20 @@ export function StringLights({ from, to, count = 9, sag = 0.14, r = 0.026, accen
     </group>
   );
 }
+
+export function Room({ size, accent, posts = 2, position }: { size: V3; accent: string; posts?: number; position?: V3 }) {
+  const [w, h, d] = size;
+  return (
+    <group position={position}>
+      <Block size={[w, h, 0.1]} position={[0, h / 2, -d / 2]} edge={accent} />
+      <Block size={[0.1, h, d]} position={[-w / 2, h / 2, 0]} edge={accent} />
+      <Block size={[0.1, h, d]} position={[w / 2, h / 2, 0]} edge={accent} />
+      {Array.from({ length: posts }, (_, i) => (
+        <Block key={i} size={[0.1, h, 0.1]} position={[-w / 2 + (i * w) / (posts - 1), h / 2, d / 2]} material={mat.light} />
+      ))}
+      <Block size={[w, h, 0.02]} position={[0, h / 2, d / 2]} material={mat.glass} />
+      <Block size={[w, 0.02, d]} position={[0, 0.011, 0]} material={mat.dark} />
+      <Block size={[w + 0.2, 0.09, d + 0.2]} position={[0, h + 0.045, 0]} material={mat.light} edge={accent} />
+    </group>
+  );
+}
