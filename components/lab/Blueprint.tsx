@@ -242,6 +242,16 @@ const Flow = () => (
 
 const BODY: Record<string, () => React.JSX.Element> = { brand: Brand, video: Video, web: Web, app: App, agent: Agent, mind: Mind, flow: Flow };
 
+const SAY: Record<string, string> = {
+  brand: "A name people remember",
+  video: "A film that shows who you are",
+  web: "A website that sells for you",
+  app: "Your own app in their pocket",
+  agent: "Answers every customer, day and night",
+  mind: "Knows your whole business",
+  flow: "Does the boring work by itself",
+};
+
 const Plates = () =>
   PLATES.map((p, i) => {
     const Body = BODY[p.id];
@@ -252,8 +262,18 @@ const Plates = () =>
     );
   });
 
+const Labels = () =>
+  PLATES.map((p, i) => (
+    <span key={p.id} className="lbl" style={{ left: p.x + p.w, top: p.y, "--z": p.z + 26, "--i": i } as CSSProperties}>
+      {SAY[p.id]}
+    </span>
+  ));
+
 const Sheet = () => (
   <div className="sheet">
+    {PLATES.map((p) => (
+      <i key={p.id} className="shade" style={at(p)} />
+    ))}
     <svg viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
       <g className="wires">
         {WIRES.map((d, i) => (
@@ -262,36 +282,18 @@ const Sheet = () => (
       </g>
       <g className="pulses">
         {WIRES.map((d, i) => (
-          <circle key={i} r="4">
+          <circle key={i} r="5">
             <animateMotion dur={`${3 + (i % 3)}s`} begin={`${2.4 + i * 0.5}s`} repeatCount="indefinite" path={d} />
           </circle>
         ))}
       </g>
-      <g className="ticks">
-        {Array.from({ length: 31 }, (_, i) => (
-          <path key={i} d={`M${i * 50} ${H}v${i % 2 ? 8 : 16}M0 ${Math.min(i * 50, H)}h${i % 2 ? -8 : -16}`} />
-        ))}
-      </g>
     </svg>
-    {PLATES.map((p, i) => (
-      <div key={p.id} className="foot-print" style={{ ...at(p), "--i": i } as CSSProperties}>
-        <span className="tagline">
-          <b>{p.n}</b> {p.label} <em>{p.side}</em>
-        </span>
-        <span className="dim">
-          {p.w} × {p.h}
-        </span>
-        <i className="drop a" />
-        <i className="drop b" />
-        <i className="drop c" />
-      </div>
-    ))}
   </div>
 );
 
 export function Blueprint() {
   const root = useRef<HTMLElement>(null);
-  const coords = useRef<HTMLSpanElement>(null);
+  const sparks = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const el = root.current!;
@@ -301,10 +303,22 @@ export function Blueprint() {
     const fit = () => {
       w = el.clientWidth;
       h = el.clientHeight;
-      el.style.setProperty("--s", Math.max(Math.min(w / 2050, h / 1150), Math.min(w / 1000, h / 1500)).toFixed(4));
+      el.style.setProperty("--rpx", String(Math.min(Math.max(130, w * 0.19), 290)));
+      el.style.setProperty("--s", Math.max(Math.min(w / 2300, h / 1250), Math.min(w / 1000, h / 1500)).toFixed(4));
     };
-    fit();
-    addEventListener("resize", fit);
+    const cv = sparks.current!;
+    const ctx = cv.getContext("2d")!;
+    const dpr = Math.min(devicePixelRatio, 2);
+    const size = () => {
+      fit();
+      cv.width = w * dpr;
+      cv.height = h * dpr;
+    };
+    size();
+    addEventListener("resize", size);
+    const dots = Array.from({ length: Math.min(64, Math.round((w * h) / 20000)) }, (_, i) => ({ x: Math.random() * w, y: Math.random() * h, vx: 0, vy: 0, a: i * 2.4, r: 0.6 + Math.random() * 1.1 }));
+
+    const tags = el.querySelectorAll<HTMLElement>(".lbl");
 
     let tx = w * 0.56;
     let ty = h * 0.56;
@@ -336,13 +350,43 @@ export function Blueprint() {
         el.style.setProperty("--tz", `${((x / w - 0.5) * 5).toFixed(2)}deg`);
         el.style.setProperty("--tx", `${((y / h - 0.5) * -4).toFixed(2)}deg`);
       }
-      if (coords.current) coords.current.textContent = `x ${Math.round(x).toString().padStart(4, "0")}  y ${Math.round(y).toString().padStart(4, "0")}`;
+      const R = parseFloat(getComputedStyle(el).getPropertyValue("--rpx")) || 220;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+      ctx.globalCompositeOperation = "lighter";
+      for (const d of dots) {
+        const dx = x - d.x;
+        const dy = y - d.y;
+        const dist = Math.hypot(dx, dy) || 1;
+        const near = Math.max(0, 1 - dist / (R * 2.4));
+        d.vx += (Math.cos(d.a + t * 0.3) * 0.012 + (dx / dist) * near * 0.05 - (dy / dist) * near * 0.035) * (still ? 0 : 1);
+        d.vy += (Math.sin(d.a * 1.7 + t * 0.25) * 0.012 + (dy / dist) * near * 0.05 + (dx / dist) * near * 0.035) * (still ? 0 : 1);
+        d.vx *= 0.97;
+        d.vy *= 0.97;
+        d.x = (d.x + d.vx + w) % w;
+        d.y = (d.y + d.vy + h) % h;
+        const lit = Math.min(1, near * 2.2);
+        const rad = d.r * (1 + lit * 1.6);
+        const g = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, rad * 3.2);
+        g.addColorStop(0, `rgba(255, ${Math.round(190 + 40 * lit)}, ${Math.round(150 + 60 * lit)}, ${0.22 + lit * 0.6})`);
+        g.addColorStop(1, "rgba(255, 150, 90, 0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, rad * 3.2, 0, 7);
+        ctx.fill();
+      }
+      const box = el.getBoundingClientRect();
+      for (const tag of tags) {
+        const b = tag.getBoundingClientRect();
+        const far = Math.hypot(b.left + b.width / 2 - box.left - x, b.bottom - box.top - y) / R;
+        tag.style.opacity = Math.max(0, Math.min(1, 2.1 - far * 1.5)).toFixed(2);
+      }
       raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
     return () => {
       cancelAnimationFrame(raf);
-      removeEventListener("resize", fit);
+      removeEventListener("resize", size);
       el.removeEventListener("pointermove", move);
     };
   }, []);
@@ -353,42 +397,26 @@ export function Blueprint() {
         <Sheet />
         <Plates />
       </div>
+      <div className="lamp" aria-hidden="true" />
       <div className="lit" aria-hidden="true">
         <div className="iso real">
           <Plates />
         </div>
       </div>
-      <div className="lamp" aria-hidden="true">
-        <span ref={coords} />
+      <div className="iso tags" aria-hidden="true">
+        <Labels />
       </div>
+      <canvas ref={sparks} className="sparks" aria-hidden="true" />
 
       <div className="bp-copy">
-        <p className="eyebrow">Drawing 01 · your business, complete</p>
+        <p className="eyebrow">For business owners</p>
         <h1>
-          Every business runs on a plan.
-          <em>I build the whole thing.</em>
+          Your business,
+          <em>switched on.</em>
         </h1>
-        <p className="bp-hint">Move the light to see it finished. Scroll to watch it get built.</p>
+        <p className="bp-lead">Everything your customers see, and everything that works for you behind it. Designed and built by one studio.</p>
+        <p className="bp-hint">Move the light</p>
       </div>
-
-      <dl className="title-block" aria-hidden="true">
-        <div>
-          <dt>Project</dt>
-          <dd>Saffron Yard</dd>
-        </div>
-        <div>
-          <dt>Sheet</dt>
-          <dd>01 / 07</dd>
-        </div>
-        <div>
-          <dt>Parts</dt>
-          <dd>4 face · 3 brain</dd>
-        </div>
-        <div>
-          <dt>Drawn by</dt>
-          <dd>Rooftop AI Studio</dd>
-        </div>
-      </dl>
     </section>
   );
 }
