@@ -37,7 +37,6 @@ export type StoryCopy = {
     faceEyebrow: string;
     face: string;
     faceSub: string;
-    faceParts: [string, string, string];
     morning: string;
     morningSub: string;
     madeUp: string;
@@ -109,7 +108,6 @@ export const STORY: Record<Lang, StoryCopy> = {
       faceEyebrow: "Outside",
       face: "The face",
       faceSub: "And this is where that customer found you. Designed for your business, not poured into a template.",
-      faceParts: ["Website", "App", "Brand"],
       morning: "You slept. Your business didn't.",
       morningSub: "While you were asleep",
       madeUp: "A made-up night at a made-up shop, to show how it works.",
@@ -137,7 +135,7 @@ export const STORY: Record<Lang, StoryCopy> = {
         mind: "Knows your whole business",
         flow: "Does the boring work by itself",
       },
-      brand: { tag: "Stationery · est. 2026", fonts: ["Syne ExtraBold", "Instrument Sans"] },
+      brand: { tag: "Stationery · est. 2026", fonts: ["Fraunces", "Instrument Sans"] },
       video: "Paper Fox · the film · 00:38",
       web: {
         nav: ["New in", "Notebooks", "Gift sets"],
@@ -199,7 +197,6 @@ export const STORY: Record<Lang, StoryCopy> = {
       faceEyebrow: "מבחוץ",
       face: "הפנים",
       faceSub: "וכאן הלקוחה מצאה אתכם. עיצוב שנתפר לעסק שלכם, לא עוד תבנית.",
-      faceParts: ["אתר", "אפליקציה", "מותג"],
       morning: "אתם ישנתם. העסק לא.",
       morningSub: "בזמן שישנתם",
       madeUp: "לילה דמיוני בחנות דמיונית, רק כדי להמחיש איך זה עובד.",
@@ -227,7 +224,7 @@ export const STORY: Record<Lang, StoryCopy> = {
         mind: "יודע הכול על העסק",
         flow: "עושה לבד את העבודה השחורה",
       },
-      brand: { tag: "כלי כתיבה · מאז 2026", fonts: ["Syne ExtraBold", "Instrument Sans"] },
+      brand: { tag: "כלי כתיבה · מאז 2026", fonts: ["Frank Ruhl Libre", "Heebo"] },
       video: "דף חדש · הסרט · 00:38",
       web: {
         nav: ["חדש", "מחברות", "מתנות"],

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Syne, Instrument_Sans } from "next/font/google";
+import { Fraunces, Syne, Instrument_Sans } from "next/font/google";
 import { Footer, Header } from "@/components/site/Chrome";
 import { site } from "@/lib/site";
 import "@/app/globals.css";
 
 const display = Syne({ variable: "--font-display", subsets: ["latin"], weight: ["600", "800"] });
+const brand = Fraunces({ variable: "--font-brand", subsets: ["latin"] });
 const body = Instrument_Sans({ variable: "--font-body", subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function EnglishLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    <html lang="en" className={`${display.variable} ${body.variable} ${brand.variable}`}>
       <body>
         <Header lang="en" />
         {children}

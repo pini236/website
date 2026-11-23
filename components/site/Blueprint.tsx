@@ -3,6 +3,7 @@
 import { useEffect, useRef, type CSSProperties } from "react";
 import type { Lang } from "@/lib/copy";
 import { STORY, type BlockId, type StoryCopy } from "@/lib/story";
+import { Mark } from "./nightScenes";
 import "./blueprint.css";
 
 const W = 1500;
@@ -32,12 +33,12 @@ const WIRES = [
 
 const at = (p: Plate) => ({ left: p.x, top: p.y, width: p.w, height: p.h, "--z": p.z }) as CSSProperties;
 
-type B = { t: StoryCopy["bp"] };
+type B = { t: StoryCopy["bp"]; he: boolean };
 
-const Brand = ({ t }: B) => (
+const Brand = ({ t, he }: B) => (
   <>
     <div className="row">
-      <b className="logo">{t.name[0]}</b>
+      <Mark he={he} />
       <div>
         <strong className="hd">{t.name}</strong>
         <span>{t.brand.tag}</span>
@@ -51,7 +52,7 @@ const Brand = ({ t }: B) => (
       <i />
     </div>
     <div className="row type">
-      <strong className="hd">Aa</strong>
+      <strong className="hd">{he ? "אב" : "Aa"}</strong>
       <p>
         {t.brand.fonts[0]}
         <br />
@@ -242,17 +243,17 @@ const Flow = ({ t }: B) => (
 
 const BODY: Record<BlockId, (p: B) => React.JSX.Element> = { brand: Brand, film: Film, web: Web, app: App, agent: Agent, mind: Mind, flow: Flow };
 
-const Plates = ({ t, rtl }: B & { rtl: boolean }) =>
+const Plates = ({ t, rtl }: { t: B["t"]; rtl: boolean }) =>
   PLATES.map((p, i) => {
     const Body = BODY[p.id];
     return (
       <div key={p.id} className={`pl ${p.id}`} dir={rtl ? "rtl" : undefined} style={{ ...at(p), "--i": i } as CSSProperties}>
-        <Body t={t} />
+        <Body t={t} he={rtl} />
       </div>
     );
   });
 
-const Labels = ({ t }: B) =>
+const Labels = ({ t }: Pick<B, "t">) =>
   PLATES.map((p, i) => (
     <span key={p.id} className="lbl" dir={t.name === "Paper Fox" ? undefined : "rtl"} style={{ left: p.x + p.w, top: p.y, "--z": p.z + 26, "--i": i } as CSSProperties}>
       {t.say[p.id]}

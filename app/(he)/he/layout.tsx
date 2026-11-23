@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Heebo } from "next/font/google";
+import { Frank_Ruhl_Libre, Heebo } from "next/font/google";
 import { Footer, Header } from "@/components/site/Chrome";
 import { COPY } from "@/lib/copy";
 import { site } from "@/lib/site";
 import "@/app/globals.css";
 
 const font = Heebo({ variable: "--font-body", subsets: ["hebrew", "latin"] });
+const brand = Frank_Ruhl_Libre({ variable: "--font-brand", subsets: ["hebrew", "latin"] });
 const c = COPY.he;
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function HebrewLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="he" dir="rtl" className={font.variable}>
+    <html lang="he" dir="rtl" className={`${font.variable} ${brand.variable}`}>
       <body>
         <Header lang="he" />
         {children}

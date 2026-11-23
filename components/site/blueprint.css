@@ -32,18 +32,20 @@
 .bp .pl .logo { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--acc); color: var(--ink); font-family: var(--font-display), sans-serif; font-size: 20px; }
 .bp .pl .kick { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #b4532a; opacity: 1; }
 .bp .brand, .bp .agent, .bp .mind, .bp .video { color: var(--ivory); }
-.bp .brand { display: flex; flex-direction: column; gap: 14px; padding: 20px; background: #120f33; }
+.bp .brand { display: flex; flex-direction: column; gap: 14px; padding: 20px; background: #24402f; color: #fbf6ec; }
+.bp .brand .bmark { flex: none; width: 44px; }
+.bp .brand .hd { font-family: var(--font-brand), serif; font-weight: 600; }
 .bp .brand .row div { display: grid; }
 .bp .brand .hd { font-size: 23px; }
 .bp .swatches { display: flex; gap: 8px; }
-.bp .swatches i { flex: 1; height: 34px; border-radius: 8px; background: var(--acc); }
-.bp .swatches i:nth-child(2) { background: #ffc14d; }
-.bp .swatches i:nth-child(3) { background: var(--ivory); }
-.bp .swatches i:nth-child(4) { background: #3a3180; }
-.bp .swatches i:nth-child(5) { background: var(--ink); box-shadow: inset 0 0 0 1px rgba(244, 239, 255, 0.3); }
+.bp .swatches i { flex: 1; height: 34px; border-radius: 8px; background: #e07f4f; }
+.bp .swatches i:nth-child(2) { background: #f2b662; }
+.bp .swatches i:nth-child(3) { background: #fbf6ec; }
+.bp .swatches i:nth-child(4) { background: #efe2c8; }
+.bp .swatches i:nth-child(5) { background: #1b211d; }
 .bp .type .hd { font-size: 50px; }
 .bp .type p { font-size: 12px; opacity: 0.7; }
-.bp .pattern { flex: 1; border-radius: 10px; background: repeating-radial-gradient(circle at 0 100%, var(--acc) 0 2px, transparent 2px 13px); }
+.bp .pattern { flex: 1; border-radius: 10px; background: repeating-linear-gradient(90deg, #e07f4f 0 18px, #fdf1dd 18px 36px); }
 .bp .video { display: flex; gap: 14px; padding: 14px; background: #07061a; }
 .bp .frame { position: relative; flex: 0 0 52%; display: grid; place-items: center; overflow: hidden; border-radius: 10px; background: linear-gradient(135deg, var(--acc), #7a1f3d 70%, #1b1040); }
 .bp .frame b { position: absolute; font-size: 170px; color: var(--ink); opacity: 0.22; }

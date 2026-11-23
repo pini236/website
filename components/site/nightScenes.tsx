@@ -192,8 +192,39 @@ export function Brain({ t }: { t: StoryCopy }) {
   );
 }
 
-export function Face({ t }: { t: StoryCopy }) {
-  const { story: s, c: COPY } = t;
+const DRAW = rv(0.08, 0.2);
+const FILL = rv(0.17, 0.25);
+
+export const Mark = ({ he, style }: { he: boolean; style?: CSSProperties }) => (
+  <svg className="bmark tv" viewBox="0 0 64 64" style={style} aria-hidden="true">
+    {he ? (
+      <>
+        <g className="tv" style={FILL}>
+          <path d="M17 7h22l12 12v38H17Z" fill="#fbf6ec" />
+          <path d="M39 7v12h12Z" fill="#e07f4f" />
+          {[30, 38, 46].flatMap((y) => [26, 34, 42].map((x) => <circle key={`${x}${y}`} cx={x} cy={y} r="1.9" fill="#24402f" />))}
+        </g>
+        <path className="ln" pathLength={1} d="M17 7h22l12 12v38H17ZM39 7v12h12" />
+      </>
+    ) : (
+      <>
+        <g className="tv" style={FILL}>
+          <path d="M9 9 27 25 11 35ZM55 9 37 25 53 35Z" fill="#c96a3d" />
+          <path d="M11 35 27 25 32 29 37 25 53 35 32 45Z" fill="#e07f4f" />
+          <path d="M11 35 32 45V59Z" fill="#fbf6ec" />
+          <path d="M53 35 32 45V59Z" fill="#efe2c8" />
+          <path d="M28.6 54.4h6.8L32 59Z" fill="#1b211d" />
+        </g>
+        <path className="ln" pathLength={1} d="M9 9 27 25 11 35ZM55 9 37 25 53 35ZM11 35 27 25 32 29 37 25 53 35 32 59ZM11 35 32 45 53 35" />
+      </>
+    )}
+  </svg>
+);
+
+const SWATCHES = ["#24402F", "#E07F4F", "#F2B662", "#EFE2C8", "#1B211D"];
+
+export function Face({ t, he }: { t: StoryCopy; he: boolean }) {
+  const { story: s, c: COPY, bp } = t;
   return (
     <div className="layer face" data-scene>
       <div className="title rv x" style={rv(0, 0.08, 0.94, 1)}>
@@ -202,76 +233,93 @@ export function Face({ t }: { t: StoryCopy }) {
         <p className="lead">{COPY.faceSub}</p>
       </div>
 
-      <div className="set x" style={rv(0, 0.1, 0.94, 1)}>
-        <div className="browser">
+      <div className="set x" style={rv(0, 0.1, 0.94, 1)} aria-hidden="true">
+        <div className="sheet tv" style={rv(0.52, 0.64)}>
+          <div className="board">
+            <div className="lockup">
+              <Mark he={he} style={DRAW} />
+              <strong className="bf rv" style={rv(0.2, 0.28)}>
+                {s.name}
+              </strong>
+              <small className="rv" style={rv(0.25, 0.31)}>
+                {bp.brand.tag}
+              </small>
+            </div>
+            <div className="type rv" style={rv(0.38, 0.45)}>
+              <b className="bf">{he ? "אב" : "Aa"}</b>
+              <p dir="ltr">
+                {bp.brand.fonts[0]}
+                <br />
+                {bp.brand.fonts[1]}
+              </p>
+            </div>
+            <div className="awn tv" style={rv(0.42, 0.5)} />
+            <div className="sw">
+              {SWATCHES.map((hex, i) => (
+                <i key={hex} className="tv" dir="ltr" style={{ ...rv(0.29 + i * 0.022, 0.35 + i * 0.022), background: hex }}>
+                  {hex}
+                </i>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="browser rv" style={rv(0.56, 0.68)}>
           <div className="bar">
             <i />
             <i />
             <i />
-            <span>{s.domain}</span>
+            <span dir="ltr">{s.domain}</span>
           </div>
           <div className="page">
-            <div className="blk nav" style={rv(0.12, 0.18)}>
+            <div className="nav">
+              <Mark he={he} />
+              <b className="bf">{s.name}</b>
+              {s.site.links.map((l) => (
+                <span key={l}>{l}</span>
+              ))}
+            </div>
+            <div className="pg-hero">
               <div>
-                <b>{s.name}</b>
-                {s.site.links.map((l) => (
-                  <span key={l}>{l}</span>
-                ))}
+                <p className="k">{s.trade}</p>
+                <h3 className="bf">{s.site.headline}</h3>
+                <p className="sub">{bp.web.sub}</p>
+                <em>{s.site.cta}</em>
               </div>
+              <div className="shot tv" style={{ ...rv(0.62, 0.74), backgroundImage: `url(/street${he ? "/he" : ""}/day-11.jpg)` }} />
             </div>
-            <div className="blk head" style={rv(0.2, 0.32)}>
-              <div>
-                <p>{t.story.trade}</p>
-                <h3>{s.site.headline}</h3>
-              </div>
-            </div>
-            <div className="blk art" style={rv(0.3, 0.42)}>
-              <div>
-                <b>{s.name[0]}</b>
-              </div>
-            </div>
-            <div className="blk btn" style={rv(0.4, 0.46)}>
-              <div>{s.site.cta}</div>
-            </div>
-            <div className="widget rv" style={rv(0.46, 0.54)}>
-              <p className="bubble them">{s.confirm}</p>
-              <p className="bubble us">{s.done}</p>
+            <div className="cards">
+              {bp.web.cards.map(([name, note]) => (
+                <div key={name}>
+                  <strong>{name}</strong>
+                  <span>{note}</span>
+                </div>
+              ))}
             </div>
           </div>
-          <span className="tag rv" style={rv(0.5, 0.55)}>
-            {COPY.faceParts[0]}
-          </span>
         </div>
 
-        <div className="app rv" style={rv(0.58, 0.7)}>
+        <div className="app rv" style={rv(0.76, 0.87)}>
           <Phone>
             <div className="mini">
-              <b className="avatar">{s.name[0]}</b>
-              <strong>{s.name}</strong>
+              <header>
+                <Mark he={he} />
+                <span>{bp.app.hello}</span>
+                <strong className="bf">{bp.app.who}</strong>
+              </header>
               <div className="mini-card">
-                <strong>{s.ticket[0]}</strong>
-                <span>{s.ticket[1]}</span>
+                <span>{bp.app.ticket[0]}</span>
+                <strong>{bp.app.ticket[1]}</strong>
+                <span>{bp.app.ticket[2]}</span>
               </div>
-              <i />
-              <i />
+              <ul>
+                {bp.app.lines.map((l) => (
+                  <li key={l}>{l}</li>
+                ))}
+              </ul>
               <em>{s.site.cta}</em>
             </div>
           </Phone>
-          <span className="tag">{COPY.faceParts[1]}</span>
-        </div>
-
-        <div className="brand rv" style={rv(0.7, 0.82)}>
-          <div className="brand-card">
-            <b>{s.name[0]}</b>
-            <strong>{s.name}</strong>
-            <p>
-              <i />
-              <i />
-              <i />
-              <span>Aa</span>
-            </p>
-          </div>
-          <span className="tag">{COPY.faceParts[2]}</span>
         </div>
       </div>
     </div>

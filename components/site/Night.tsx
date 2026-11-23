@@ -107,7 +107,7 @@ export function Night({ lang }: { lang: Lang }) {
         <NightScene t={t} />
         <Rewind t={t} />
         <Brain t={t} />
-        <Face t={t} />
+        <Face t={t} he={lang === "he"} />
         <Morning t={t} />
 
         <nav className="hud" aria-label="Story">
