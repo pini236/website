@@ -1,6 +1,6 @@
 "use client";
 
-import { Awning, Block, Chair, Counter, Cyl, Door, IVORY, Island, Lamp, Planter, Plant, Shelf, Sign, StringLights, Table, Umbrella, WARM, Windows, glow, mat, tint, type V3 } from "../parts";
+import { Awning, Block, Chair, Counter, Cyl, Door, IVORY, Lamp, Pad, Planter, Plant, Shelf, Sign, StringLights, Table, Umbrella, WARM, Windows, glow, mat, tint, type V3 } from "../parts";
 
 const PI = Math.PI;
 const inside: V3[] = [[-1.05, 0, -0.15], [-0.25, 0, -0.1], [-0.05, 0, -0.85]];
@@ -20,7 +20,9 @@ function Seating({ at }: { at: V3 }) {
 export function Restaurant({ accent }: { accent: string }) {
   return (
     <group>
-      <Island size={[4.4, 3.4]} accent={accent} />
+      <group position={[0.1, 0, -0.2]}>
+        <Pad size={[4.7, 3.7]} accent={accent} />
+      </group>
 
       {/* ground floor */}
       <Block size={[2.5, 1.15, 0.1]} position={[-0.75, 0.575, -1.35]} edge={accent} />

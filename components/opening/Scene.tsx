@@ -7,21 +7,25 @@ import type { Group } from "three";
 import { BUSINESSES, type BusinessId } from "@/lib/businesses";
 import { capDelta } from "@/lib/morph";
 import { BusinessModel } from "./BusinessModel";
+import { Stage } from "./Stage";
 
 type Pointer = { x: number; y: number };
 
 function Rig({ pointer, still, children }: { pointer: { current: Pointer }; still: boolean; children: ReactNode }) {
   const group = useRef<Group>(null);
   const wide = useThree((s) => s.size.width >= 760);
-  useFrame((_, delta) => {
+  useFrame(({ camera }, delta) => {
     const g = group.current;
     if (!g) return;
     const k = still ? 1 : 1 - Math.exp(-4 * capDelta(delta));
-    g.rotation.y += ((still ? 0 : pointer.current.x * 0.45) - g.rotation.y) * k;
-    g.rotation.x += ((still ? 0 : pointer.current.y * 0.2) - g.rotation.x) * k;
+    const { x, y } = still ? { x: 0, y: 0 } : pointer.current;
+    g.rotation.y += (x * 0.45 - g.rotation.y) * k;
+    camera.position.x += (x * 0.7 - camera.position.x) * k;
+    camera.position.y += (0.5 - y * 0.22 - camera.position.y) * k;
+    camera.lookAt(0, -0.2, 0);
   });
   return (
-    <group ref={group} position={[wide ? 1.95 : 0, 0, 0]} scale={wide ? 1 : 0.8}>
+    <group ref={group} position={[wide ? 1.6 : 0, 0, 0]} scale={wide ? 1 : 0.8}>
       {children}
     </group>
   );
@@ -40,16 +44,17 @@ export default function Scene({ business, reducedMotion }: { business: BusinessI
   }, []);
 
   return (
-    <Canvas flat dpr={[1, 2]} camera={{ position: [0, 1.6, 8], fov: 38 }}>
-      <color attach="background" args={["#0B0920"]} />
-      <ambientLight intensity={0.5} color="#8C7BFF" />
-      <directionalLight position={[4, 6, 5]} intensity={2.2} color={accent} />
+    <Canvas flat dpr={[1, 2]} camera={{ position: [0, 0.5, 9], fov: 36 }}>
+      <Stage accent={accent} still={reducedMotion} />
+      <ambientLight intensity={0.55} color="#8C7BFF" />
+      <directionalLight position={[4, 6, 5]} intensity={1.7} color="#FFE7CF" />
       <directionalLight position={[-5, 3, -4]} intensity={1.4} color="#6FA8FF" />
+      <pointLight position={[3, 1, 3.5]} intensity={14} distance={10} color={accent} />
       <Rig pointer={pointer} still={reducedMotion}>
         <BusinessModel business={business} visible={1} />
       </Rig>
       <EffectComposer>
-        <Bloom intensity={0.9} luminanceThreshold={0.6} mipmapBlur />
+        <Bloom intensity={1.2} luminanceThreshold={0.6} mipmapBlur />
       </EffectComposer>
     </Canvas>
   );

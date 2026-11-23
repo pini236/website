@@ -8,11 +8,12 @@ type At = { position?: V3; rotation?: V3 };
 
 export const WARM = "#FFD49A";
 export const IVORY = "#F4EFFF";
+export const FLOOR = -1.25;
 
 export const mat = {
-  body: new MeshStandardMaterial({ color: "#1B1747", roughness: 0.6, metalness: 0.1 }),
-  light: new MeshStandardMaterial({ color: "#2C2672", roughness: 0.5, metalness: 0.1 }),
-  pale: new MeshStandardMaterial({ color: "#5A52B8", roughness: 0.5 }),
+  body: new MeshStandardMaterial({ color: "#3A2C9E", roughness: 0.6, metalness: 0.1 }),
+  light: new MeshStandardMaterial({ color: "#5B49D8", roughness: 0.5, metalness: 0.1 }),
+  pale: new MeshStandardMaterial({ color: "#A99BFF", roughness: 0.5 }),
   dark: new MeshStandardMaterial({ color: "#232A66", roughness: 0.3, metalness: 0.3 }),
   glass: new MeshStandardMaterial({ color: "#9AA8FF", transparent: true, opacity: 0.13, roughness: 0.1, depthWrite: false }),
   leaf: new MeshStandardMaterial({ color: "#1E7A66", emissive: "#3DD6C4", emissiveIntensity: 0.2, roughness: 0.9, flatShading: true }),
@@ -32,7 +33,7 @@ export function tint(color: string, emissive = 0.4) {
   return tints.get(key)!;
 }
 
-const rnd = (i: number) => ((Math.imul(i + 1, 2654435761) >>> 0) % 1000) / 1000;
+export const rnd = (i: number) => ((Math.imul(i + 1, 2654435761) >>> 0) % 1000) / 1000;
 
 export function Block({ size, material = mat.body, edge, position, rotation }: At & { size: V3; material?: Material; edge?: string }) {
   return (
@@ -59,14 +60,15 @@ export function Orb({ r, material, position }: At & { r: number; material: Mater
   );
 }
 
-export function Island({ size, accent }: { size: [number, number]; accent: string }) {
+export function Pad({ size, accent }: { size: [number, number]; accent: string }) {
   const [w, d] = size;
+  const m = glow(accent, 1.5);
   return (
-    <group>
-      <Block size={[w, 0.18, d]} position={[0, -0.09, 0]} material={mat.light} edge={accent} />
-      <Block size={[w * 0.82, 0.14, d * 0.8]} position={[0, -0.25, 0]} />
-      <Block size={[w * 0.56, 0.12, d * 0.52]} position={[0, -0.38, 0]} />
-      <Block size={[w * 0.84, 0.02, d * 0.82]} position={[0, -0.185, 0]} material={glow(accent, 1.3)} />
+    <group position={[0, 0.012, 0]}>
+      <Block size={[w, 0.02, 0.035]} position={[0, 0, d / 2]} material={m} />
+      <Block size={[w, 0.02, 0.035]} position={[0, 0, -d / 2]} material={m} />
+      <Block size={[0.035, 0.02, d]} position={[w / 2, 0, 0]} material={m} />
+      <Block size={[0.035, 0.02, d]} position={[-w / 2, 0, 0]} material={m} />
     </group>
   );
 }
@@ -260,14 +262,14 @@ export function Umbrella({ accent, position }: { accent: string; position?: V3 }
   );
 }
 
-export function StringLights({ from, to, count = 9, sag = 0.14, accent }: { from: V3; to: V3; count?: number; sag?: number; accent: string }) {
+export function StringLights({ from, to, count = 9, sag = 0.14, r = 0.026, accent }: { from: V3; to: V3; count?: number; sag?: number; r?: number; accent: string }) {
   return (
     <group>
       {Array.from({ length: count }, (_, i) => {
         const t = (i + 0.5) / count;
         const p = from.map((a, k) => a + (to[k] - a) * t) as V3;
         p[1] -= sag * 4 * t * (1 - t);
-        return <Orb key={i} r={0.026} position={p} material={glow(i % 3 === 1 ? accent : WARM, 2.1)} />;
+        return <Orb key={i} r={r} position={p} material={glow(i % 3 === 1 ? accent : WARM, 2.1)} />;
       })}
     </group>
   );

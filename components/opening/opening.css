@@ -21,13 +21,13 @@
 .opening :focus-visible { outline-color: var(--acc); }
 
 .opening-stage { position: absolute; inset: 0; pointer-events: none; animation: opening-in 0.9s both; }
-.opening-glow { position: absolute; inset: 0; mix-blend-mode: screen;
-  background: radial-gradient(55% 60% at 72% 55%, color-mix(in srgb, var(--acc) 20%, transparent), transparent 72%); }
+.opening-glow { position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(11, 9, 32, 0.88) 0%, rgba(11, 9, 32, 0.6) 34%, transparent 62%); }
 @keyframes opening-in { from { opacity: 0; } }
 
 @media (max-width: 760px) {
   .opening { align-items: flex-start; padding-top: 96px; padding-bottom: 58svh; }
   .opening.flat { padding-bottom: 58vw; }
   .opening-stage { top: auto; height: 55svh; }
-  .opening-glow { background: radial-gradient(80% 60% at 50% 55%, color-mix(in srgb, var(--acc) 20%, transparent), transparent 72%); }
+  .opening-glow { background: linear-gradient(180deg, var(--night) 0%, transparent 30%); }
 }
