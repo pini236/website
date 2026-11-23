@@ -94,7 +94,7 @@ const Web = ({ t }: B) => (
       <i />
       <i />
       <i />
-      <span dir="ltr">paperfox.com</span>
+      <span dir="ltr">{t.domain}</span>
     </div>
     <div className="nav">
       <strong className="hd">{t.name}</strong>

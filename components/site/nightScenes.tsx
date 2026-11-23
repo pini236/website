@@ -128,9 +128,9 @@ export function Brain({ t }: { t: StoryCopy }) {
   return (
     <div className="layer brain" data-scene>
       <div className="title rv x" style={rv(0, 0.08, 0.94, 1)}>
-        <p className="eyebrow">{COPY.brainEyebrow}</p>
-        <h2>{COPY.brain}</h2>
-        <p className="lead">{COPY.brainSub}</p>
+        <p className="eyebrow">{COPY.agentEyebrow}</p>
+        <h2>{COPY.agent}</h2>
+        <p className="lead">{COPY.agentSub}</p>
       </div>
 
       <Phone className="rise x" style={rv(0, 0.1, 0.94, 1)}>
@@ -208,7 +208,7 @@ export function Face({ t }: { t: StoryCopy }) {
             <i />
             <i />
             <i />
-            <span>paperfox.com</span>
+            <span>{s.domain}</span>
           </div>
           <div className="page">
             <div className="blk nav" style={rv(0.12, 0.18)}>

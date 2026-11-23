@@ -12,6 +12,7 @@ export function Day({ lang }: { lang: Lang }) {
   const c = COPY[lang].day;
   const root = useRef<HTMLElement>(null);
   const time = useRef<HTMLOutputElement>(null);
+  const dir = lang === "he" ? "/street/he" : "/street";
 
   useEffect(() => {
     const el = root.current!;
@@ -61,7 +62,7 @@ export function Day({ lang }: { lang: Lang }) {
         <div className="stage" aria-hidden="true">
           {PLATES.map((n, i) => (
             // eslint-disable-next-line @next/next/no-img-element
-            <img key={n} src={`/street/day-${n}.jpg`} alt="" className="plate" style={{ opacity: i === 0 ? 1 : `var(--w${i})` }} />
+            <img key={n} src={`${dir}/day-${n}.jpg`} alt="" className="plate" style={{ opacity: i === 0 ? 1 : `var(--w${i})` }} />
           ))}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/street/xray.jpg" alt="" className="xray" />

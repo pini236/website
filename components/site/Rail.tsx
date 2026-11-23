@@ -1,12 +1,23 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import type { Lang } from "@/lib/copy";
 import { locate } from "@/lib/night";
 import { sceneProgress } from "@/lib/scroll";
 import { BLOCKS, STORY, type BlockId } from "@/lib/story";
 
-const BUILT: Record<BlockId, number> = { brand: 0.46, web: 0.52, app: 0.58, film: 0.64, agent: 0.82, mind: 0.86, flow: 0.9 };
+const BUILT: Record<BlockId, number> = { brand: 0.42, web: 0.48, app: 0.54, film: 0.6, agent: 0.78, mind: 0.82, flow: 0.86 };
+
+// Where a click lands: section id and how far into it.
+const TARGET: Record<BlockId, [string, number]> = {
+  brand: ["street", BUILT.brand + 0.02],
+  web: ["street", BUILT.web + 0.02],
+  app: ["street", BUILT.app + 0.02],
+  film: ["street", BUILT.film + 0.02],
+  agent: ["night", 0.49],
+  mind: ["day", 0.93],
+  flow: ["day", 0.56],
+};
 
 const progress = (id: string) => {
   const el = document.getElementById(id);
@@ -59,12 +70,24 @@ export function Rail({ lang }: { lang: Lang }) {
     };
   }, []);
 
+  const go = (id: BlockId) => {
+    const [section, at] = TARGET[id];
+    const r = document.getElementById(section)!.getBoundingClientRect();
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    scrollTo({ top: scrollY + r.top + at * (r.height - innerHeight), behavior: still ? "auto" : "smooth" });
+  };
+
   return (
     <ol ref={root} className="rail" aria-label={t.rail} data-show="true">
-      {BLOCKS.map((b) => (
-        <li key={b} data-id={b} data-built="false" data-now="false">
-          <i />
-          <span>{t.blocks[b]}</span>
+      {BLOCKS.map((b, i) => (
+        <li key={b} data-id={b} data-built="false" data-now="false" style={{ "--i": i } as CSSProperties}>
+          <button type="button" onClick={() => go(b)} aria-label={`${t.blocks[b]}: ${t.bp.say[b]}`}>
+            <i />
+            <span className="tip" aria-hidden="true">
+              <b dir="auto">{t.blocks[b]}</b>
+              <em dir="auto">{t.bp.say[b]}</em>
+            </span>
+          </button>
         </li>
       ))}
     </ol>

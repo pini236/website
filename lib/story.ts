@@ -5,6 +5,7 @@ export type BlockId = (typeof BLOCKS)[number];
 
 export type Story = {
   name: string;
+  domain: string;
   trade: string;
   ask: string;
   gone: string;
@@ -29,9 +30,9 @@ export type StoryCopy = {
     everyNight: string;
     rewind: string;
     rewindSub: string;
-    brainEyebrow: string;
-    brain: string;
-    brainSub: string;
+    agentEyebrow: string;
+    agent: string;
+    agentSub: string;
     trace: string;
     faceEyebrow: string;
     face: string;
@@ -50,6 +51,7 @@ export type StoryCopy = {
   rail: string;
   bp: {
     name: string;
+    domain: string;
     eyebrow: string;
     head: [string, string];
     lead: string;
@@ -69,6 +71,7 @@ export const STORY: Record<Lang, StoryCopy> = {
   en: {
     story: {
       name: "Paper Fox",
+      domain: "paperfox.com",
       trade: "Stationery shop",
       ask: "Do you have the A5 dot notebook in green? I need it by Thursday.",
       gone: "Ordered it somewhere else, thanks anyway.",
@@ -99,9 +102,9 @@ export const STORY: Record<Lang, StoryCopy> = {
       everyNight: "It happens most nights. You never even hear about it.",
       rewind: "Run that night again.",
       rewindSub: "Same night. Same message. This time something is awake.",
-      brainEyebrow: "Inside",
-      brain: "The brain",
-      brainSub: "An AI that knows your business answers in seconds, at any hour, and does the work behind the answer.",
+      agentEyebrow: "Inside",
+      agent: "The agent",
+      agentSub: "An AI agent that knows your business. It answers in seconds, at any hour, and then acts: checks the stock, holds the item, sends the link.",
       trace: "What happened behind the answer",
       faceEyebrow: "Outside",
       face: "The face",
@@ -112,14 +115,15 @@ export const STORY: Record<Lang, StoryCopy> = {
       madeUp: "A made-up night at a made-up shop, to show how it works.",
       now: "now",
       ago: "7h ago",
-      awake: "AI assistant · awake",
+      awake: "AI agent · awake",
       skip: "Skip the story",
-      chapters: ["The night", "Again", "The brain", "The face", "Morning"],
+      chapters: ["The night", "Again", "The agent", "The face", "Morning"],
     },
     blocks: { brand: "Brand", web: "Website", app: "App", film: "Film", agent: "Agent", mind: "Second brain", flow: "Workflows" },
     rail: "What your business is made of",
     bp: {
       name: "Paper Fox",
+      domain: "paperfox.com",
       eyebrow: "The whole plan",
       head: ["Seven blocks.", "One business."],
       lead: "Everything your customers see, and everything that works for you behind it. Built by one studio, so it fits together.",
@@ -149,97 +153,99 @@ export const STORY: Record<Lang, StoryCopy> = {
         ],
       },
       app: { hello: "Good evening,", who: "Dana", ticket: ["Your order", "Arrives Wednesday", "A5 dot notebook · green"], lines: ["Track the delivery", "Add a gift note", "Reorder your favourites"] },
-      agent: { status: "AI assistant · awake · 23:47", q: "Do you have the A5 dot notebook in green?", a: "Yes, four left! Order tonight and it arrives Wednesday.", q2: "Yes please.", a2: "Here is the link. I'm holding one for you." },
+      agent: { status: "AI agent · awake · 23:47", q: "Do you have the A5 dot notebook in green?", a: "Yes, four left! Order tonight and it arrives Wednesday.", q2: "Yes please.", a2: "Here is the link. I'm holding one for you." },
       mind: { docs: ["Catalog.pdf", "Suppliers.xlsx", "Orders", "Reviews", "Stock"], asked: "You asked", q: "What sold best in September?", a: "The A5 dot notebook, by far. Green runs out first." },
       flow: { kick: "Runs by itself · every order", steps: ["New order", "Check stock", "Order supplier", "Send invoice", "Remind customer"], log: ["23:49 order paid", "notebooks ×20 ordered", "invoice sent"] },
     },
   },
   he: {
     story: {
-      name: "שועל נייר",
+      name: "דף חדש",
+      domain: "dafhadash.co.il",
       trade: "חנות לכלי כתיבה",
-      ask: "יש לכם מחברת A5 מנוקדת בירוק? אני צריכה אותה עד יום חמישי.",
-      gone: "הזמנתי במקום אחר, תודה בכל זאת.",
-      lost: "עד הבוקר, היא כבר קנתה במקום אחר.",
+      ask: "יש לכם את מחברת הנקודות A5 בירוק? אני צריכה אותה עד יום חמישי.",
+      gone: "כבר הזמנתי ממקום אחר, תודה בכל מקרה.",
+      lost: "עד הבוקר היא כבר קנתה במקום אחר.",
       steps: [
-        ["קראתי את ההודעה", "מחברת A5 מנוקדת, ירוקה, עד יום חמישי"],
-        ["בדקתי מלאי", "נשארו ארבע בירוק"],
-        ["בדקתי משלוח", "מזמינים הלילה, מגיע ביום רביעי"],
+        ["קראתי את ההודעה", "מחברת נקודות A5, ירוקה, עד יום חמישי"],
+        ["בדקתי במלאי", "נשארו ארבע בירוק"],
+        ["בדקתי משלוח", "הזמנה הלילה מגיעה ביום רביעי"],
         ["עניתי", "ארבע שניות אחרי שההודעה הגיעה"],
       ],
-      reply: "כן, נשארו ארבע בירוק! מזמינים הלילה והיא אצלך ביום רביעי. לשלוח קישור?",
-      confirm: "כן, בבקשה.",
-      done: "הנה הקישור. שמרתי אחת בשבילך לשעה הקרובה.",
+      reply: "כן, נשארו ארבע בירוק! אם מזמינים הלילה, היא אצלך ביום רביעי. לשלוח לך קישור?",
+      confirm: "כן, אשמח.",
+      done: "הנה הקישור. שמרתי לך אחת לשעה הקרובה.",
       site: { headline: "נייר ששווה לכתוב עליו.", cta: "למחברות", links: ["חדש", "מחברות", "מתנות"] },
-      ticket: ["ההזמנה בוצעה · 23:49", "מחברת A5 מנוקדת · ירוק"],
+      ticket: ["ההזמנה התקבלה · 23:49", "מחברת נקודות A5 · ירוק"],
       morning: [
-        ["הזמנה חדשה", "מחברת A5 מנוקדת בירוק, שולם ב־23:49"],
-        ["המלאי עודכן", "נשארו שלוש בירוק"],
-        ["6 שאלות נענו", "אף אחד לא מחכה לתשובה"],
+        ["הזמנה חדשה", "מחברת נקודות A5 בירוק, שולמה ב־23:49"],
+        ["המלאי התעדכן", "נשארו שלוש בירוק"],
+        ["6 פניות נענו", "אף לקוח לא נשאר בלי תשובה"],
       ],
     },
     c: {
-      day: "לילה של יום שלישי",
+      day: "יום שלישי בלילה",
       hook: "החנות שלכם סגורה.",
-      hookAccent: "לקוחה כתבה לכם הרגע.",
-      hint: "גללו כדי לראות איך הלילה נגמר",
+      hookAccent: "ולקוחה בדיוק כתבה לכם.",
+      hint: "גללו לראות איך הלילה הזה נגמר",
       nobody: "אין מי שיענה.",
-      everyNight: "זה קורה כמעט כל לילה. אתם אפילו לא שומעים על זה.",
-      rewind: "בואו נריץ את הלילה שוב.",
-      rewindSub: "אותו לילה. אותה הודעה. הפעם משהו ער.",
-      brainEyebrow: "מבפנים",
-      brain: "המוח",
-      brainSub: "בינה מלאכותית שמכירה את העסק עונה תוך שניות, בכל שעה, ועושה את העבודה שמאחורי התשובה.",
-      trace: "מה קרה מאחורי התשובה",
+      everyNight: "זה קורה כמעט כל לילה. ואתם אפילו לא יודעים.",
+      rewind: "בואו נחזיר את הלילה אחורה.",
+      rewindSub: "אותו לילה. אותה הודעה. רק שהפעם מישהו ער.",
+      agentEyebrow: "מבפנים",
+      agent: "הסוכן",
+      agentSub: "סוכן AI שמכיר את העסק שלכם. עונה תוך שניות, בכל שעה, וגם פועל: בודק מלאי, שומר מוצר, שולח קישור.",
+      trace: "מה קרה מאחורי הקלעים",
       faceEyebrow: "מבחוץ",
       face: "הפנים",
-      faceSub: "ושם הלקוחה מצאה אתכם. מעוצב לעסק שלכם, לא יצוק מתבנית.",
+      faceSub: "וכאן הלקוחה מצאה אתכם. עיצוב שנתפר לעסק שלכם, לא עוד תבנית.",
       faceParts: ["אתר", "אפליקציה", "מותג"],
-      morning: "ישנתם. העסק לא.",
+      morning: "אתם ישנתם. העסק לא.",
       morningSub: "בזמן שישנתם",
-      madeUp: "לילה מומצא בחנות מומצאת, כדי להראות איך זה עובד.",
+      madeUp: "לילה דמיוני בחנות דמיונית, רק כדי להמחיש איך זה עובד.",
       now: "עכשיו",
       ago: "לפני 7 שעות",
-      awake: "עוזרת AI · ערה",
-      skip: "דלגו על הסיפור",
-      chapters: ["הלילה", "שוב", "המוח", "הפנים", "בוקר"],
+      awake: "סוכן AI · ער",
+      skip: "לדלג על הסיפור",
+      chapters: ["הלילה", "שוב", "הסוכן", "הפנים", "בוקר"],
     },
     blocks: { brand: "מותג", web: "אתר", app: "אפליקציה", film: "סרט", agent: "סוכן", mind: "מוח שני", flow: "אוטומציות" },
-    rail: "ממה העסק שלכם עשוי",
+    rail: "ממה העסק שלכם בנוי",
     bp: {
-      name: "שועל נייר",
+      name: "דף חדש",
+      domain: "dafhadash.co.il",
       eyebrow: "התוכנית המלאה",
-      head: ["שבעה אבני בניין.", "עסק אחד."],
-      lead: "כל מה שהלקוחות רואים, וכל מה שעובד בשבילכם מאחורי הקלעים. נבנה בסטודיו אחד, אז הכול מתחבר.",
+      head: ["שבע אבני בניין.", "עסק אחד."],
+      lead: "כל מה שהלקוחות רואים, וכל מה שעובד בשבילכם מאחורי הקלעים. הכול נבנה תחת קורת גג אחת, ולכן הכול מתחבר.",
       hint: "הזיזו את האור",
       say: {
-        brand: "שם שזוכרים",
-        film: "סרט שמראה מי אתם",
-        web: "אתר שמוכר במקומכם",
-        app: "אפליקציה משלכם בכיס",
-        agent: "עונה לכל לקוח, יום ולילה",
-        mind: "מכיר את כל העסק",
-        flow: "עושה לבד את העבודה המשעממת",
+        brand: "שם שלא שוכחים",
+        film: "סרט שמספר מי אתם",
+        web: "אתר שמוכר בשבילכם",
+        app: "אפליקציה משלכם, בכיס של הלקוחות",
+        agent: "עונה לכל לקוח, ביום ובלילה",
+        mind: "יודע הכול על העסק",
+        flow: "עושה לבד את העבודה השחורה",
       },
       brand: { tag: "כלי כתיבה · מאז 2026", fonts: ["Syne ExtraBold", "Instrument Sans"] },
-      video: "שועל נייר · הסרט · 00:38",
+      video: "דף חדש · הסרט · 00:38",
       web: {
         nav: ["חדש", "מחברות", "מתנות"],
-        kick: "משלוח חינם מעל 200",
+        kick: "משלוח חינם מעל 200 ₪",
         head: "נייר ששווה לכתוב עליו.",
-        sub: "מחברות, עטים ומתנות קטנות, שנבחרו על ידי אנשים שכותבים הרבה.",
+        sub: "מחברות, עטים ומתנות קטנות, שבחרו אנשים שכותבים הרבה.",
         book: "למחברות",
-        menu: "לערכות המתנה",
+        menu: "למארזי המתנה",
         cards: [
-          ["מחברת A5 מנוקדת", "ירוק, כריכה תפורה"],
-          ["סט עטי מכחול", "שנים־עשר צבעים רכים"],
-          ["מתכנן שולחני", "שבוע במבט אחד"],
+          ["מחברת נקודות A5", "ירוקה, בכריכה תפורה"],
+          ["סט טושי מכחול", "שנים־עשר גוונים רכים"],
+          ["פלנר שולחני", "כל השבוע במבט אחד"],
         ],
       },
-      app: { hello: "ערב טוב,", who: "דנה", ticket: ["ההזמנה שלך", "מגיעה ביום רביעי", "מחברת A5 מנוקדת · ירוק"], lines: ["מעקב אחרי המשלוח", "הוספת ברכה למתנה", "הזמנה חוזרת של המועדפים"] },
-      agent: { status: "עוזרת AI · ערה · 23:47", q: "יש לכם מחברת A5 מנוקדת בירוק?", a: "כן, נשארו ארבע! מזמינים הלילה והיא מגיעה ביום רביעי.", q2: "כן, בבקשה.", a2: "הנה הקישור. שמרתי אחת בשבילך." },
-      mind: { docs: ["קטלוג.pdf", "ספקים.xlsx", "הזמנות", "ביקורות", "מלאי"], asked: "שאלתם", q: "מה נמכר הכי טוב בספטמבר?", a: "מחברת ה־A5 המנוקדת, בפער. הירוקה נגמרת ראשונה." },
-      flow: { kick: "רץ לבד · בכל הזמנה", steps: ["הזמנה חדשה", "בדיקת מלאי", "הזמנה מספק", "שליחת חשבונית", "תזכורת ללקוחה"], log: ["23:49 ההזמנה שולמה", "20 מחברות הוזמנו", "חשבונית נשלחה"] },
+      app: { hello: "ערב טוב,", who: "דנה", ticket: ["ההזמנה שלך", "מגיעה ביום רביעי", "מחברת נקודות A5 · ירוק"], lines: ["מעקב משלוח", "הוספת ברכה למתנה", "להזמין שוב את המועדפים"] },
+      agent: { status: "סוכן AI · ער · 23:47", q: "יש לכם את מחברת הנקודות A5 בירוק?", a: "כן, נשארו ארבע! אם מזמינים הלילה, היא אצלך ביום רביעי.", q2: "כן, אשמח.", a2: "הנה הקישור. שמרתי לך אחת." },
+      mind: { docs: ["קטלוג.pdf", "ספקים.xlsx", "הזמנות", "ביקורות", "מלאי"], asked: "שאלתם", q: "מה הכי נמכר בספטמבר?", a: "מחברת הנקודות A5, ובפער. הירוקה תמיד נגמרת ראשונה." },
+      flow: { kick: "רץ לבד · בכל הזמנה", steps: ["הזמנה חדשה", "בדיקת מלאי", "הזמנה מהספק", "שליחת חשבונית", "תזכורת ללקוח"], log: ["23:49 ההזמנה שולמה", "הוזמנו 20 מחברות", "החשבונית נשלחה"] },
     },
   },
 };
