@@ -20,7 +20,7 @@
 - Model style: stylised, glowing architectural miniatures with real detail. Not low-poly toys, not photo-real, not an abstract blob with cards around it.
 - No mention of Pini's employer anywhere. No invented numbers, testimonials or logos.
 - All copy lives in `lib/businesses.ts` so Hebrew can be added later.
-- Layout and text stay quiet and left-aligned; boldness is spent on the 3D.
+- The scene fills the whole opening and the copy is laid over it, left-aligned, on a soft dark scrim; boldness is spent on the 3D.
 - The visitor can always scroll on and reach the "Talk to me" button. No loading screen with nothing to look at.
 - `public/googleb929b81e251b9750.html`, `/privacy`, `/contact` and `/delete-account` must keep working unchanged.
 - Work happens on the branch `opening-scene`. `main` is the live Google Play site and is not touched until Pini approves the look.
@@ -207,60 +207,56 @@ test("easing and frame delta stay in range", () => {
 
 ---
 
-### Task 5: The other four models
+## Revision 2 (2026-11-23): the rooftop direction
+
+Pini saw the Task 4 restaurant, called it "nice but not spectacular", reviewed reference sites and approved a mix (spec section "Direction change"). Tasks 5 to 8 below replace the old Tasks 5 to 7. Models stay code-built (no Blender or AI 3D tool is available in this environment) but are restyled: saturated colour, neon, a mirror floor, a world around them.
+
+### Task 5: The rooftop stage and the neon restyle
 
 **Files:**
-- Create: `components/opening/models/Clinic.tsx`, `Shop.tsx`, `Studio.tsx`, `Other.tsx`
-- Modify: `components/opening/BusinessModel.tsx`, `components/opening/parts.tsx` (new parts only where a model needs one)
+- Create: `components/opening/Stage.tsx`
+- Modify: `components/opening/Scene.tsx`, `components/opening/parts.tsx`, `components/opening/models/Restaurant.tsx`, `components/opening/BusinessModel.tsx`, `components/opening/opening.css`
 
 **Interfaces:**
-- Consumes: the kit and `BusinessModel` from Task 4.
-- Produces: four components with the same props as `Restaurant`, all within the same 4 × 3.4 bounds so the camera never moves between them.
+- Produces: `Stage({ accent }: { accent: string })`: sky dome with a horizon glow in the accent, stars, a ring of distant towers with lit windows, a dark mirror roof floor with a parapet, foreground string lights, drifting motes, fog.
+- `parts.tsx`: `mat` gains saturated colours; `Island` is removed (the model stands on the roof floor).
 
-- [ ] **Step 1: Clinic.** Calm, wide, single-storey with a glass front, a glowing cross-free health mark (a soft ring), a reception counter, a waiting row of chairs, two treatment rooms visible through windows, a roof garden.
-- [ ] **Step 2: Shop.** A tall narrow storefront, a large display window with shelves of small glowing products, a hanging sign, an open door, stacked parcels, a striped awning in pink.
-- [ ] **Step 3: Studio.** A loft with a sawtooth roof, big desks with glowing screens, a wall of pinned frames, a meeting table, a spiral stair, plants.
-- [ ] **Step 4: Other.** An abstract building: stacked offset floors with a rooftop terrace and one bright window pattern, clearly a building and clearly not one specific trade.
-- [ ] **Step 5: Verify.** One screenshot per business at 1440×900. Each must be recognisable without its label, and the five must look like one family.
-- [ ] **Step 6: Commit** as "Opening: clinic, shop, studio and default models".
+- [ ] **Step 1: Stage.** Canvas fills the section. Camera `[0, 1.5, 8.6]`, fov 36. Floor: drei `MeshReflectorMaterial` on a 60 x 60 plane at the model's base. Fog `#0B0920` from 14 to 46.
+- [ ] **Step 2: Restyle.** Walls and furniture get distinct saturated colours; signs and trims are neon above the bloom threshold. Bloom intensity 1.2.
+- [ ] **Step 3: Copy over the scene.** A left-to-right dark scrim under the copy; under 760px the scrim runs top to bottom.
+- [ ] **Step 4: Verify.** Screenshots at 1440x900 and 390x844; 55 fps or better; `rtk proxy npm run build` passes; fallback still shows the skyline hero with WebGL disabled.
+- [ ] **Step 5: Commit** as "Opening: rooftop stage and neon restyle".
 
----
-
-### Task 6: The particle morph
+### Task 6: The particle morph and the default building
 
 **Files:**
-- Create: `components/opening/Particles.tsx`
-- Modify: `components/opening/Scene.tsx`, `components/opening/BusinessModel.tsx`
+- Create: `components/opening/Particles.tsx`, `components/opening/models/Other.tsx`
+- Modify: `lib/morph.ts`, `lib/morph.test.ts`, `components/opening/Scene.tsx`, `components/opening/BusinessModel.tsx`
 
 **Interfaces:**
-- Consumes: `PARTICLE_COUNT`, `resample`, `blend`, `ease`, `capDelta` from `lib/morph.ts`; the group ref from `BusinessModel`.
-- Produces: `Particles({ target, accent, reducedMotion, onProgress }: { target: THREE.Group | null; accent: string; reducedMotion: boolean; onProgress: (p: number) => void })`.
+- Produces: `SWIRL_RADIUS = 2.4`; `swirled(from, to, seeds, t, time): Float32Array` (the shader's position formula in JS, used to retarget mid-morph); `Particles({ targets, business, accent, reducedMotion, onProgress })`.
 
-- [ ] **Step 1: Sampling.** When `target` changes, sample its meshes with `MeshSurfaceSampler` (`three/addons/math/MeshSurfaceSampler.js`), weighting each mesh by surface area, into about 20,000 points in the group's local space, then `resample` to `PARTICLE_COUNT`. Cache the result per business id.
-- [ ] **Step 2: Shader.** One `THREE.Points` with attributes `aFrom`, `aTo`, `aSeed` and uniforms `uProgress`, `uTime`, `uAccent`, `uPointer`. Position is `mix(aFrom, aTo, ease(uProgress))` plus a swirl offset around the vertical axis whose strength is `sin(PI * uProgress)` times a radius of 2.4 and a per-particle seed, plus a small idle shimmer. Particles within 0.9 units of the pointer ray are pushed away by up to 0.35. Point size 2.2px scaled by depth, additive blending, colour mixed from ivory to the accent by seed.
-- [ ] **Step 3: Timeline.** A morph lasts 2.2 seconds. On a new target: `aFrom` becomes `blend(oldFrom, oldTo, currentProgress)` (so a second click mid-morph starts from where the particles are), `aTo` becomes the new sample, progress restarts at 0. The frame delta goes through `capDelta`. `onProgress` drives the solid meshes: the old model's `visible` drops to 0 during the first 25% and the new one rises during the last 30%.
-- [ ] **Step 4: Reduced motion.** With `reducedMotion`, skip the swirl and the pointer push; cross-fade the solid models over 0.3 seconds and set the particles straight to the new sample.
-- [ ] **Step 5: Verify in the browser.**
-  - click each business in turn: the model tears apart, swirls, and re-forms as the new one, with the accent and lead text changing at the same moment
-  - click two businesses 0.5 seconds apart: no jump, ends on the second
-  - switch to another tab for 20 seconds mid-morph and return: no explosion
-  - emulate `prefers-reduced-motion: reduce`: a plain fade
-  - frame rate stays at 55 fps or better during a morph
-- [ ] **Step 6: Run** `rtk proxy npm test` and `rtk proxy npm run build`. Expected: all pass.
-- [ ] **Step 7: Commit** as "Opening: particle morph between businesses".
+- [ ] **Step 1: Failing test** "swirled starts at from, ends at to, and strays no further than the swirl radius" (already written). Run `rtk proxy npm test`. Expected: FAIL, swirled is not a function.
+- [ ] **Step 2: Implement** `swirled`. Expected: PASS.
+- [ ] **Step 3: Sampling.** `MeshSurfaceSampler` per mesh, weighted by area, about 20,000 points in the model group's space, `resample` to `PARTICLE_COUNT`, cached per business.
+- [ ] **Step 4: Shader and timeline.** As the old Task 6: 2.2 s morph, swirl strength `sin(PI * p)`, pointer push, additive points; a second pick mid-morph starts from `swirled(...)` at the current progress; solid models fade out in the first 25% and in over the last 30%; reduced motion is a 0.3 s cross-fade.
+- [ ] **Step 5: Other.** Stacked offset floors with a roof terrace, clearly a building and no specific trade.
+- [ ] **Step 6: Verify** the old Task 6 browser checks between Restaurant and Other. `rtk proxy npm test`, `rtk proxy npm run build`.
+- [ ] **Step 7: Commit** as "Opening: particle morph and default building".
 
----
-
-### Task 7: Arrival, per-business light, and the approval build
+### Task 7: Clinic, shop and studio
 
 **Files:**
-- Modify: `components/opening/Scene.tsx`, `components/opening/Opening.tsx`, `components/opening/opening.css`
+- Create: `components/opening/models/Clinic.tsx`, `Shop.tsx`, `Studio.tsx`
+- Modify: `components/opening/BusinessModel.tsx`
 
-**Interfaces:**
-- Consumes: everything above.
+- [ ] **Step 1: Build** the three models as described in the old Task 5, in the neon style, within the same bounds.
+- [ ] **Step 2: Verify.** One screenshot per business; each recognisable without its label.
+- [ ] **Step 3: Commit** as "Opening: clinic, shop and studio".
 
-- [ ] **Step 1: Arrival.** On first load the particles start as a loose drifting cloud and form the default building over 2.6 seconds while the headline, lead and picker rise in one after another (0.12 seconds apart). This is the loading sequence: the page is readable from the first frame.
-- [ ] **Step 2: Light per business.** Key light colour and a slow background gradient follow the accent; both ease over the morph's 2.2 seconds.
-- [ ] **Step 3: Final checks.** Repeat the Task 3 and Task 6 browser checks, plus a keyboard pass: the picker is reachable with Tab, operable with Enter and Space, and focus is visible.
-- [ ] **Step 4: Commit** as "Opening: arrival sequence and per-business light".
-- [ ] **Step 5: Approval build.** With Pini's yes for the push (company policy requires asking), push the branch `opening-scene` to `pini236/website` so Vercel makes a preview address, and give Pini that address. `main` is merged only after he approves the look.
+### Task 8: Arrival, light per business, approval build
+
+- [ ] **Step 1: Arrival.** Particles start as a loose cloud and form the default building over 2.6 s while the copy rises in, 0.12 s apart.
+- [ ] **Step 2: Light per business.** Key light, horizon glow and motes follow the accent, eased over the morph.
+- [ ] **Step 3: Final checks.** The Review Focus list, plus a keyboard pass on the picker.
+- [ ] **Step 4: Commit** as "Opening: arrival sequence and per-business light", push `opening-scene` (already approved by Pini), give him the preview address.

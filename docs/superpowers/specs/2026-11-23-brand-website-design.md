@@ -80,7 +80,7 @@ One long home page made of scenes, in the order a business owner asks his questi
 - Headline: the promise. Under it: "Show me yours. I run a…" with choices: Restaurant, Clinic, Shop, Studio or agency, and a text box: "Something else? Tell me what you run."
 - **Typed business.** The visitor types a few words ("a dog-grooming salon"). A real AI returns, for that business: the headline, three face results and three brain results, an accent colour from a prepared set, and which prepared 3D model and design set fits best. The page then morphs to that version with the same particle effect as the ready-made ones. While the AI works, the model is already tearing apart into particles, so the wait is part of the show.
 - The AI only fills prepared slots. It never invents layout, 3D or free colours.
-- The 3D subject is a **detailed miniature of that business**, floating in space: a restaurant, a clinic, a shop, a studio. A typed business gets the closest of these, or an abstract building when none fits.
+- The 3D subject is a **detailed miniature of that business**, standing on a rooftop at night (see "Direction change"): a restaurant, a clinic, a shop, a studio. A typed business gets the closest of these, or an abstract building when none fits.
 - The model is made of solid stylised geometry plus a dense field of light particles. Changing business makes the model tear apart into particles, swirl, and re-form as the new business. This is the signature moment.
 - The mouse orbits the model and pushes the particles.
 - The accent colour, lighting and all copy on the page change with the business.
@@ -142,7 +142,7 @@ One long home page made of scenes, in the order a business owner asks his questi
 - Base: deep indigo night `#0B0920`, ivory text `#F4EFFF`.
 - Accent follows the business: ember `#FF7A45` (restaurant), mint `#3DD6C4` (clinic), pink `#FF4F9A` (shop), violet `#8C7BFF` (studio), gold `#FFC14D` (default). A typed business gets one of these five, chosen by the AI.
 - Type: Syne (wide, heavy) for headlines, Instrument Sans for reading.
-- Boldness is spent on the 3D and motion. Layout and text around it stay quiet and left-aligned.
+- Boldness is spent on the 3D and motion. The scene fills the screen and the text is laid over it, quiet and left-aligned.
 
 ## How it gets built (Claude's calls, not yet reviewed by Pini)
 
@@ -185,3 +185,20 @@ One long home page made of scenes, in the order a business owner asks his questi
 - **Sharing the plan.** Download as an image and send by WhatsApp only. No share links, so nothing is stored on the server.
 - **Google Play pages.** A general developer privacy policy now; a per-app page is added when each app is published. Account deletion is a short form that sends the request to Pini.
 - **Project labels.** Each project's label (paid client, built for a real business, own product, prototype) and whether the business may be named are confirmed with Pini before that project goes on the site. Until confirmed, a project is shown unnamed.
+
+## Direction change (2026-11-23, approved by Pini)
+
+Pini saw the first restaurant miniature and said it was nice but not spectacular. After a review of reference sites he approved building the opening from a mix of ideas:
+
+| Part | Idea | Taken from |
+|---|---|---|
+| Stage | A rooftop at night with a city skyline, filling the screen, text laid on top | thehappyhourandco.com |
+| Subject | The business miniature on a mirror floor, with neon and small life details | jesse-zhou.com, djdb.kr |
+| Signature moment | Pick a business; it bursts into particles and re-forms | nday.kr, futamura.dev (nobody does this with buildings) |
+| Scroll (milestone 2) | The camera flies through the window into the building | iamerfan.me |
+| Selling | Short first-person headline, WhatsApp under the main button, a free first step | patrickgibbs.dev, lobod.rocks, blackbook.dk |
+
+Claude's calls, for Pini to check:
+
+- **Models stay code-built for now**, restyled with saturated colour, neon and reflection. Hand-made or AI-generated models are the better route and replace them behind the same component once a tool or an artist is available.
+- **The selling ideas** (free first step, WhatsApp under the button, proof numbers) wait for the WhatsApp number and for real numbers; nothing is invented.
