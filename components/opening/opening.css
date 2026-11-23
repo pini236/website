@@ -34,9 +34,9 @@
 @keyframes opening-rise { from { opacity: 0; transform: translateY(18px); } }
 @media (prefers-reduced-motion: reduce) { .opening-copy > *, .opening-stage { animation: none; } }
 
-@media (max-width: 760px) {
-  .opening { align-items: flex-start; padding-top: 96px; padding-bottom: 58svh; }
-  .opening.flat { padding-bottom: 58vw; }
+@media (max-width: 760px) { .opening.flat { padding-bottom: 58vw; } }
+@media (max-width: 1000px) {
+  .opening:not(.flat) { align-items: flex-start; padding-top: 96px; padding-bottom: 58svh; }
   .opening-stage { top: auto; height: 55svh; }
   .opening-glow { background: linear-gradient(180deg, var(--night) 0%, transparent 30%); }
 }

@@ -8,13 +8,16 @@ import "./opening.css";
 
 const Scene = dynamic(() => import("./Scene"), { ssr: false });
 
-class Boundary extends Component<{ fallback: ReactNode; children: ReactNode }, { failed: boolean }> {
+class Boundary extends Component<{ onFail: () => void; children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() {
     return { failed: true };
   }
+  componentDidCatch() {
+    this.props.onFail();
+  }
   render() {
-    return this.state.failed ? this.props.fallback : this.props.children;
+    return this.state.failed ? null : this.props.children;
   }
 }
 
@@ -31,7 +34,9 @@ const onMotionChange = (cb: () => void) => {
 
 export function Opening({ fallback }: { fallback: ReactNode }) {
   const [business, setBusiness] = useState<BusinessId>(DEFAULT_BUSINESS);
-  const supported = useSyncExternalStore(never, hasWebgl, () => null);
+  const [failed, setFailed] = useState(false);
+  const probed = useSyncExternalStore(never, hasWebgl, () => null);
+  const supported = probed === null ? null : probed && !failed;
   const reducedMotion = useSyncExternalStore(onMotionChange, () => motionQuery().matches, () => false);
   const { accent, lead } = BUSINESSES[business];
 
@@ -62,7 +67,7 @@ export function Opening({ fallback }: { fallback: ReactNode }) {
       </div>
       {supported === false && fallback}
       {supported && (
-        <Boundary fallback={fallback}>
+        <Boundary onFail={() => setFailed(true)}>
           <div className="opening-stage" aria-hidden="true">
             <Scene business={business} reducedMotion={reducedMotion} />
             <div className="opening-glow" />

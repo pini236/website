@@ -43,3 +43,10 @@ export function swirled(from: Float32Array, to: Float32Array, seeds: Float32Arra
   }
   return out;
 }
+
+export const approach = (current: number, target: number, dt: number, rate = 9) => current + (target - current) * (1 - Math.exp(-rate * dt));
+
+export const fadeStep = (vis: number, target: number, dt: number, outTime: number) => (vis > target ? Math.max(target, vis - dt / outTime) : target);
+
+export const STACK_BELOW = 1000;
+export const rigLayout = (width: number) => (width > STACK_BELOW ? { x: 1.6, scale: 1 } : { x: 0, scale: 0.8 });

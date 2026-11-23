@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { SWIRL_RADIUS, blend, capDelta, ease, resample, swirled } from "./morph";
+import { SWIRL_RADIUS, approach, blend, capDelta, ease, fadeStep, rigLayout, resample, swirled } from "./morph";
 
 test("resample returns the asked count using only source points", () => {
   const src = new Float32Array([0, 0, 0, 1, 1, 1, 2, 2, 2]);
@@ -35,4 +35,19 @@ test("swirled starts at from, ends at to, and strays no further than the swirl r
   const stray = Math.hypot(mid[0] - line[0], mid[1] - line[1], mid[2] - line[2]);
   expect(stray).toBeGreaterThan(1);
   expect(stray).toBeLessThanOrEqual(SWIRL_RADIUS * 1.2);
+});
+
+test("a retarget mid-morph dims the cloud and shrinks the old model gradually, never in one frame", () => {
+  const frame = 1 / 60;
+  expect(approach(0.42, 0.1, frame)).toBeGreaterThan(0.35);
+  expect(approach(0.42, 0.1, 2)).toBeCloseTo(0.1, 3);
+  expect(fadeStep(0.8, 0, frame, 0.55)).toBeGreaterThan(0.75);
+  expect(fadeStep(0.8, 0, 1, 0.55)).toBe(0);
+  expect(fadeStep(0.2, 0.6, frame, 0.55)).toBe(0.6);
+});
+
+test("the model is centred until the screen is wide enough to sit beside the copy", () => {
+  expect(rigLayout(390)).toEqual({ x: 0, scale: 0.8 });
+  expect(rigLayout(768)).toEqual({ x: 0, scale: 0.8 });
+  expect(rigLayout(1440)).toEqual({ x: 1.6, scale: 1 });
 });

@@ -4,17 +4,18 @@ import { useFrame } from "@react-three/fiber";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AdditiveBlending, BufferAttribute, BufferGeometry, Color, Matrix4, Raycaster, ShaderMaterial, Vector2, Vector3, type Group, type Material, type Mesh } from "three";
 import { BUSINESSES, type BusinessId } from "@/lib/businesses";
-import { PARTICLE_COUNT, capDelta, ease, resample, swirled } from "@/lib/morph";
+import { PARTICLE_COUNT, approach, capDelta, ease, fadeStep, resample, swirled } from "@/lib/morph";
 import { BusinessModel } from "./BusinessModel";
 
 const MORPH = 2.2;
 const ARRIVAL = 2.6;
 const FADE = 0.3;
+const OUT = 0.55;
 const IDLE = 0.1;
 const SAMPLES = 20000;
 
 const VERT = `attribute vec3 aFrom; attribute vec3 aTo; attribute vec3 aSeed;
-uniform float uProgress; uniform float uTime; uniform float uSize; uniform float uAlpha; uniform float uPush; uniform vec3 uRayO; uniform vec3 uRayD;
+uniform float uProgress; uniform float uTime; uniform float uSize; uniform float uAlpha; uniform float uGrow; uniform float uPush; uniform vec3 uRayO; uniform vec3 uRayD;
 varying float vA; varying float vSeed;
 void main(){
   float p = clamp(uProgress, 0., 1.);
@@ -30,7 +31,7 @@ void main(){
   mv.xyz *= .994;
   gl_Position = projectionMatrix * mv;
   float tw = .65 + .35 * sin(uTime * 2.2 + aSeed.x * 60.);
-  gl_PointSize = uSize * (.45 + aSeed.y) * (1. + .35 * burst) * tw / -mv.z;
+  gl_PointSize = uSize * (.45 + aSeed.y) * (1. + .35 * uGrow) * tw / -mv.z;
   vA = uAlpha * tw;
   vSeed = aSeed.z;
 }`;
@@ -90,12 +91,15 @@ function sample(root: Group): Float32Array {
 type Pointer = { current: { x: number; y: number } };
 
 export function Morph({ business, reducedMotion, pointer }: { business: BusinessId; reducedMotion: boolean; pointer: Pointer }) {
-  const [pair, setPair] = useState<{ from: BusinessId | null; to: BusinessId }>({ from: null, to: business });
-  if (business !== pair.to) setPair({ from: pair.to, to: business });
+  const [mounted, setMounted] = useState<BusinessId[]>([business]);
+  if (!mounted.includes(business)) setMounted([...mounted, business]);
 
   const groups = useRef(new Map<BusinessId, Group>());
   const cache = useRef(new Map<BusinessId, Float32Array>());
-  const run = useRef({ p: 0, dur: ARRIVAL, time: 0, fromVis: 0, toVis: 0 });
+  const run = useRef({ p: 0, dur: ARRIVAL, time: 0 });
+  const vis = useRef(new Map<BusinessId, number>());
+  const accent = useMemo(() => new Color(BUSINESSES[business].accent), [business]);
+  const aim = useMemo(() => new Vector2(), []);
   const arrived = useRef(false);
   const ray = useMemo(() => new Raycaster(), []);
 
@@ -119,25 +123,25 @@ export function Morph({ business, reducedMotion, pointer }: { business: Business
       transparent: true,
       depthWrite: false,
       blending: AdditiveBlending,
-      uniforms: { uProgress: { value: 0 }, uTime: { value: 0 }, uSize: { value: 1 }, uAlpha: { value: 0 }, uPush: { value: 0 }, uAccent: { value: new Color() }, uRayO: { value: new Vector3() }, uRayD: { value: new Vector3(0, 0, -1) } },
+      uniforms: { uProgress: { value: 0 }, uTime: { value: 0 }, uSize: { value: 1 }, uAlpha: { value: 0 }, uGrow: { value: 0 }, uPush: { value: 0 }, uAccent: { value: new Color() }, uRayO: { value: new Vector3() }, uRayD: { value: new Vector3(0, 0, -1) } },
     });
     return { geometry, material };
   }, []);
   useEffect(() => () => (geometry.dispose(), material.dispose()), [geometry, material]);
 
   useLayoutEffect(() => {
-    const root = groups.current.get(pair.to);
+    const root = groups.current.get(business);
     if (!root) return;
-    if (!cache.current.has(pair.to)) cache.current.set(pair.to, sample(root));
+    if (!cache.current.has(business)) cache.current.set(business, sample(root));
     const from = geometry.attributes.aFrom as BufferAttribute;
     const to = geometry.attributes.aTo as BufferAttribute;
     const r = run.current;
     (from.array as Float32Array).set(swirled(from.array as Float32Array, to.array as Float32Array, geometry.attributes.aSeed.array as Float32Array, r.p, r.time));
-    (to.array as Float32Array).set(cache.current.get(pair.to)!);
+    (to.array as Float32Array).set(cache.current.get(business)!);
     from.needsUpdate = to.needsUpdate = true;
-    Object.assign(r, { p: 0, dur: arrived.current ? MORPH : ARRIVAL, fromVis: r.toVis, toVis: 0 });
+    Object.assign(r, { p: 0, dur: arrived.current ? MORPH : ARRIVAL });
     arrived.current = true;
-  }, [pair.to, geometry]);
+  }, [business, geometry]);
 
   useFrame(({ camera, size, gl }, delta) => {
     const r = run.current;
@@ -145,41 +149,42 @@ export function Morph({ business, reducedMotion, pointer }: { business: Business
     r.time += dt;
     r.p = Math.min(1, r.p + dt / (reducedMotion ? FADE : r.dur));
     const p = r.p;
-    r.toVis = reducedMotion ? p : ease((p - 0.7) / 0.3);
-    const fromVis = r.fromVis * (reducedMotion ? 1 - p : 1 - ease(p / 0.25));
+    const shown = reducedMotion ? p : ease((p - 0.7) / 0.3);
+    let gone = false;
     for (const [id, g] of groups.current) {
-      const v = id === pair.to ? r.toVis : fromVis;
+      const v = fadeStep(vis.current.get(id) ?? 0, id === business ? shown : 0, dt, reducedMotion ? FADE : OUT);
+      vis.current.set(id, v);
       g.scale.setScalar(Math.max(v, 0.001));
       g.visible = v > 0.01;
+      if (v === 0 && id !== business) gone = true;
     }
     const u = material.uniforms;
     u.uProgress.value = p;
     u.uTime.value = r.time;
-    u.uAlpha.value = reducedMotion ? 0 : IDLE + (0.42 - IDLE) * Math.sqrt(Math.sin(Math.PI * p));
+    const burst = Math.sin(Math.PI * p);
+    u.uAlpha.value = reducedMotion ? 0 : approach(u.uAlpha.value, IDLE + (0.42 - IDLE) * Math.sqrt(burst), dt);
+    u.uGrow.value = approach(u.uGrow.value, burst, dt);
     u.uPush.value = reducedMotion ? 0 : 0.4;
     u.uSize.value = (0.022 * size.height * gl.getPixelRatio()) / (2 * Math.tan(((camera as { fov?: number }).fov ?? 36) * (Math.PI / 360)));
-    u.uAccent.value.lerp(new Color(BUSINESSES[pair.to].accent), 1 - Math.exp(-3 * dt));
-    ray.setFromCamera(new Vector2(pointer.current.x, -pointer.current.y), camera);
+    u.uAccent.value.lerp(accent, 1 - Math.exp(-3 * dt));
+    ray.setFromCamera(aim.set(pointer.current.x, -pointer.current.y), camera);
     u.uRayO.value.copy(ray.ray.origin);
     u.uRayD.value.copy(ray.ray.direction);
-    if (p >= 1 && pair.from) setPair({ from: null, to: pair.to });
+    if (gone) setMounted((m) => m.filter((id) => id === business || (vis.current.get(id) ?? 0) > 0));
   });
 
   return (
     <group>
-      {[pair.from, pair.to].map(
-        (id) =>
-          id && (
-            <BusinessModel
-              key={id}
-              business={id}
-              ref={(g: Group | null) => {
-                if (g) groups.current.set(id, g);
-                else groups.current.delete(id);
-              }}
-            />
-          ),
-      )}
+      {mounted.map((id) => (
+        <BusinessModel
+          key={id}
+          business={id}
+          ref={(g: Group | null) => {
+            if (g) groups.current.set(id, g);
+            else (groups.current.delete(id), vis.current.delete(id));
+          }}
+        />
+      ))}
       <points geometry={geometry} material={material} frustumCulled={false} />
     </group>
   );

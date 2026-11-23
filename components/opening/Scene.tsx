@@ -5,7 +5,7 @@ import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { useEffect, useMemo, useRef, type ReactNode } from "react";
 import { Color, type Group, type PointLight } from "three";
 import { BUSINESSES, type BusinessId } from "@/lib/businesses";
-import { capDelta } from "@/lib/morph";
+import { capDelta, rigLayout } from "@/lib/morph";
 import { Morph } from "./Particles";
 import { Stage } from "./Stage";
 
@@ -13,7 +13,7 @@ type Pointer = { x: number; y: number };
 
 function Rig({ pointer, still, children }: { pointer: { current: Pointer }; still: boolean; children: ReactNode }) {
   const group = useRef<Group>(null);
-  const wide = useThree((s) => s.size.width >= 760);
+  const { x: offset, scale } = rigLayout(useThree((s) => s.size.width));
   useFrame(({ camera }, delta) => {
     const g = group.current;
     if (!g) return;
@@ -25,7 +25,7 @@ function Rig({ pointer, still, children }: { pointer: { current: Pointer }; stil
     camera.lookAt(0, -0.2, 0);
   });
   return (
-    <group ref={group} position={[wide ? 1.6 : 0, 0, 0]} scale={wide ? 1 : 0.8}>
+    <group ref={group} position={[offset, 0, 0]} scale={scale}>
       {children}
     </group>
   );
