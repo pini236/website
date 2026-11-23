@@ -5,78 +5,51 @@ import "./building.css";
 
 export function Building() {
   const root = useRef<HTMLElement>(null);
-  const stage = useRef<HTMLDivElement>(null);
+  const build = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const el = root.current!;
-    const st = stage.current!;
+    const v = build.current!;
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let held = false;
-    let tx = 0.5;
-    let ty = 0.5;
-    let x = 0.5;
-    let y = 0.5;
-    const move = (e: PointerEvent) => {
-      const b = st.getBoundingClientRect();
-      held = true;
-      tx = (e.clientX - b.left) / b.width;
-      ty = (e.clientY - b.top) / b.height;
-    };
-    el.addEventListener("pointermove", move);
-
+    let at = 0;
     let raf = 0;
-    const start = performance.now();
-    const frame = (now: number) => {
-      const t = (now - start) / 1000;
-      if (!held && !still) {
-        tx = 0.5 + 0.17 * Math.sin(t * 0.5);
-        ty = 0.5 + 0.24 * Math.sin(t * 0.8 + 1);
-      }
-      const k = still ? 1 : 0.12;
-      x += (tx - x) * k;
-      y += (ty - y) * k;
+    const frame = () => {
       const box = el.getBoundingClientRect();
       const p = Math.max(0, Math.min(1, -box.top / (box.height - innerHeight)));
       el.style.setProperty("--p", p.toFixed(4));
-      const w = st.clientWidth;
-      const h = st.clientHeight;
-      const R = Math.min(Math.max(140, w * 0.2), 300);
-      st.style.setProperty("--mx", `${(x * w).toFixed(1)}px`);
-      st.style.setProperty("--my", `${(y * h).toFixed(1)}px`);
-      st.style.setProperty("--r", `${R}px`);
+      const to = Math.max(0, Math.min(1, (p - 0.04) / 0.8));
+      at += (to - at) * (still ? 1 : 0.14);
+      const t = at * ((v.duration || 8) - 0.05);
+      if (v.readyState > 1 && Math.abs(v.currentTime - t) > 0.02) v.currentTime = t;
       raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
-    return () => {
-      cancelAnimationFrame(raf);
-      el.removeEventListener("pointermove", move);
-    };
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   return (
     <section ref={root} className="bd">
       <div className="bd-pin">
-      <div ref={stage} className="bd-stage" aria-hidden="true">
-        <img src="/lab/building-scaffold.webp" alt="" />
-        <img className="on" src="/lab/building-on.webp" alt="" />
-        <img className="on life" src="/lab/building-life2.webp" alt="" />
-        <img className="on life" src="/lab/building-life3.webp" alt="" />
-      </div>
+        <div className="bd-stage" aria-hidden="true">
+          <video ref={build} src="/lab/street-build.mp4" poster="/lab/street-scaffold.jpg" muted playsInline preload="auto" />
+          <video className="idle" src="/lab/street-scaffold.mp4" poster="/lab/street-scaffold.jpg" autoPlay loop muted playsInline />
+          <video className="live" src="/lab/street-live.mp4" autoPlay loop muted playsInline />
+        </div>
 
-      <div className="bd-copy">
-        <p className="eyebrow">For business owners</p>
-        <h1>
-          <span className="was">
-            Is your business
-            <em>still half built?</em>
-          </span>
-          <span className="now">
-            Your business,
-            <em>switched on.</em>
-          </span>
-        </h1>
-        <p className="bd-hint">Scroll</p>
-      </div>
+        <div className="bd-copy">
+          <p className="eyebrow">For business owners</p>
+          <h1>
+            <span className="was">
+              Is your business
+              <em>still half built?</em>
+            </span>
+            <span className="now">
+              Your business,
+              <em>switched on.</em>
+            </span>
+          </h1>
+          <p className="bd-hint">Scroll</p>
+        </div>
       </div>
     </section>
   );
