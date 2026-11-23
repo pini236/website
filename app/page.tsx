@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Opening } from "@/components/opening/Opening";
-import { Skyline } from "@/components/Skyline";
+import { Story } from "@/components/story/Story";
+import { COPY } from "@/lib/story";
 
 const face = [
   ["Websites", "that stop the scroll and sell"],
@@ -31,30 +31,38 @@ const List = ({ rows }: { rows: string[][] }) => (
 export default function Home() {
   return (
     <main>
-      <Opening fallback={<Skyline />} />
+      <Story />
 
-      <section className="split" id="what">
-        <article>
-          <p className="eyebrow">Outside</p>
-          <h2>The face</h2>
-          <p className="sub">Everything your customers see and touch.</p>
-          <List rows={face} />
-        </article>
-        <article>
-          <p className="eyebrow">Inside</p>
-          <h2>The brain</h2>
-          <p className="sub">Everything that works while you sleep.</p>
-          <List rows={brain} />
-        </article>
-      </section>
+      <div className="day">
+        <section className="promise">
+          <h2>
+            {COPY.promise}
+            <em>{COPY.promiseAccent}</em>
+          </h2>
+        </section>
 
-      <section className="closing">
-        <h2>Tell me what you run. I will show you the view from the roof.</h2>
-        <Link href="/contact" className="cta">
-          Talk to me
-        </Link>
-        <p className="note">This is the first version of the site. The full experience is being built.</p>
-      </section>
+        <section className="split" id="what">
+          <article>
+            <p className="eyebrow">Outside</p>
+            <h2>The face</h2>
+            <p className="sub">Everything your customers see and touch.</p>
+            <List rows={face} />
+          </article>
+          <article>
+            <p className="eyebrow">Inside</p>
+            <h2>The brain</h2>
+            <p className="sub">Everything that works while you sleep.</p>
+            <List rows={brain} />
+          </article>
+        </section>
+
+        <section className="closing">
+          <h2>{COPY.closing}</h2>
+          <Link href="/contact" className="cta">
+            {COPY.cta}
+          </Link>
+        </section>
+      </div>
     </main>
   );
 }

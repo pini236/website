@@ -202,3 +202,21 @@ Claude's calls, for Pini to check:
 
 - **Models stay code-built for now**, restyled with saturated colour, neon and reflection. Hand-made or AI-generated models are the better route and replace them behind the same component once a tool or an artist is available.
 - **The selling ideas** (free first step, WhatsApp under the button, proof numbers) wait for the WhatsApp number and for real numbers; nothing is invented.
+
+## Direction change 2 (2026-11-23, after Pini rejected the 3D opening)
+
+Pini saw the built rooftop scene and rejected it: it does not tell a story, it looks like AI slop, the model is simple, and neither the 3D model nor a literal picture of the name "Rooftop" has anything to do with what he does. He asked for a site that tells a story in scenes, with much better motion, learned from the reference sites.
+
+What replaces it (built on the branch `opening-scene`, not yet seen by Pini):
+
+- **The home page is one scroll story about a night in the visitor's business.** 23:47, a customer writes. Nobody answers, the clock runs to 07:12, the customer books elsewhere. "Run that night again." The brain: an AI answers, checks, books, and each step is shown. The face: the business's site builds itself from a wireframe, then its app and its brand. Morning: what was done while the owner slept. Then daylight: "That is what I build. A new face and a new brain for your business.", the two lists and the contact button.
+- **The picker stays** (Restaurant, Clinic, Shop, Studio or agency) and changes every name, message and colour in the story.
+- Sections "1. Opening: the living model" and "2. The dive" above, and the plan `docs/superpowers/plans/2026-11-23-opening-scene.md`, are superseded. The live AI plan, the work gallery and the later scenes still stand.
+
+Claude's calls, for Pini to check:
+
+- **No 3D at all for now.** The story is told with real-looking product screens (phone, chat, website, app), type and scroll-driven motion. 3D returns only with real, high-quality models.
+- **No rooftop imagery.** The name stays in the header only.
+- **No GSAP or Lenis.** A small scroll driver of our own drives every scene; three.js and its helpers were removed.
+- **All businesses and messages in the story are invented** and the morning scene says so on screen.
+- **Phones get the same story**, laid out for a narrow screen, not a video.
