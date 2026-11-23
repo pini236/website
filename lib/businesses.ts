@@ -8,6 +8,8 @@ export const OPENING = {
   headline: "Your business, rebuilt for the AI era.",
   headlineAccent: "A new face and a new brain.",
   ask: "Show me yours. I run a…",
+  eyebrow: "AI studio for businesses",
+  cta: "Talk about my business",
 };
 
 export const BUSINESSES: Record<BusinessId, Business> = {

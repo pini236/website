@@ -1,6 +1,6 @@
 import Link from "next/link";
+import { Opening } from "@/components/opening/Opening";
 import { Skyline } from "@/components/Skyline";
-import { site } from "@/lib/site";
 
 const face = [
   ["Websites", "that stop the scroll and sell"],
@@ -31,28 +31,7 @@ const List = ({ rows }: { rows: string[][] }) => (
 export default function Home() {
   return (
     <main>
-      <section className="hero">
-        <div className="hero-copy">
-          <p className="eyebrow">AI studio for businesses</p>
-          <h1>
-            Your business, rebuilt for the AI era.
-            <em>A new face and a new brain.</em>
-          </h1>
-          <p className="lead">
-            {site.short} is the one-person AI studio of {site.owner}. I design and build what your customers see, and the
-            AI that runs behind it, so your business ends up a few floors above the rest.
-          </p>
-          <div className="actions">
-            <Link href="/contact" className="cta">
-              Talk about my business
-            </Link>
-            <a href="#what" className="ghost">
-              See what I build
-            </a>
-          </div>
-        </div>
-        <Skyline />
-      </section>
+      <Opening fallback={<Skyline />} />
 
       <section className="split" id="what">
         <article>

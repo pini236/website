@@ -1,0 +1,33 @@
+@property --acc {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffc14d;
+}
+
+.opening { position: relative; min-height: 100svh; display: flex; align-items: center; padding: 120px var(--pad) 80px; overflow: hidden;
+  background: radial-gradient(90% 60% at 72% 100%, #2a1f6b 0%, transparent 70%), var(--night); transition: --acc 2.2s ease; }
+.opening.flat { padding-bottom: 21vw; }
+.opening-copy { position: relative; z-index: 1; max-width: 600px; }
+.opening h1 { font-size: clamp(28px, 3vw, 46px); text-wrap: pretty; }
+.opening h1 em, .opening .eyebrow { color: var(--acc); }
+.opening .lead { min-height: 4.8em; }
+.opening-ask { margin-top: 22px; font-weight: 600; font-size: 15px; }
+.opening-picker { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 34px; }
+.opening-picker button { font: 500 15px var(--font-body), sans-serif; color: var(--ivory); background: rgba(244, 239, 255, 0.07);
+  border: 1px solid rgba(244, 239, 255, 0.25); padding: 10px 16px; border-radius: 99px; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+.opening-picker button:hover { border-color: var(--ivory); }
+.opening-picker button[aria-pressed="true"] { background: var(--acc); border-color: var(--acc); color: var(--night); }
+.opening .cta { background: var(--acc); }
+.opening :focus-visible { outline-color: var(--acc); }
+
+.opening-stage { position: absolute; inset: 0; pointer-events: none; animation: opening-in 0.9s both; }
+.opening-glow { position: absolute; inset: 0; mix-blend-mode: screen;
+  background: radial-gradient(55% 60% at 72% 55%, color-mix(in srgb, var(--acc) 20%, transparent), transparent 72%); }
+@keyframes opening-in { from { opacity: 0; } }
+
+@media (max-width: 760px) {
+  .opening { align-items: flex-start; padding-top: 96px; padding-bottom: 58svh; }
+  .opening.flat { padding-bottom: 58vw; }
+  .opening-stage { top: auto; height: 55svh; }
+  .opening-glow { background: radial-gradient(80% 60% at 50% 55%, color-mix(in srgb, var(--acc) 20%, transparent), transparent 72%); }
+}
