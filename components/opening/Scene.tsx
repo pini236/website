@@ -2,8 +2,8 @@
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import { useEffect, useRef, type ReactNode } from "react";
-import type { Group } from "three";
+import { useEffect, useMemo, useRef, type ReactNode } from "react";
+import { Color, type Group, type PointLight } from "three";
 import { BUSINESSES, type BusinessId } from "@/lib/businesses";
 import { capDelta } from "@/lib/morph";
 import { Morph } from "./Particles";
@@ -31,6 +31,13 @@ function Rig({ pointer, still, children }: { pointer: { current: Pointer }; stil
   );
 }
 
+function KeyLight({ accent }: { accent: string }) {
+  const light = useRef<PointLight>(null);
+  const target = useMemo(() => new Color(accent), [accent]);
+  useFrame((_, delta) => void light.current?.color.lerp(target, 1 - Math.exp(-2.5 * capDelta(delta))));
+  return <pointLight ref={light} position={[3, 1, 3.5]} intensity={14} distance={10} color="#FFC14D" />;
+}
+
 export default function Scene({ business, reducedMotion }: { business: BusinessId; reducedMotion: boolean }) {
   const accent = BUSINESSES[business].accent;
   const pointer = useRef<Pointer>({ x: 0, y: 0 });
@@ -49,7 +56,7 @@ export default function Scene({ business, reducedMotion }: { business: BusinessI
       <ambientLight intensity={0.55} color="#8C7BFF" />
       <directionalLight position={[4, 6, 5]} intensity={1.7} color="#FFE7CF" />
       <directionalLight position={[-5, 3, -4]} intensity={1.4} color="#6FA8FF" />
-      <pointLight position={[3, 1, 3.5]} intensity={14} distance={10} color={accent} />
+      <KeyLight accent={accent} />
       <Rig pointer={pointer} still={reducedMotion}>
         <Morph business={business} reducedMotion={reducedMotion} pointer={pointer} />
       </Rig>

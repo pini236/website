@@ -1,8 +1,10 @@
 "use client";
 
 import { MeshReflectorMaterial, Sparkles, Stars } from "@react-three/drei";
-import { useEffect, useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
+import { useMemo } from "react";
 import { BackSide, BoxGeometry, CanvasTexture, Color, MeshBasicMaterial, NearestFilter, SRGBColorSpace } from "three";
+import { capDelta } from "@/lib/morph";
 import { Block, Cyl, FLOOR, Orb, StringLights, glow, mat, rnd, type V3 } from "./parts";
 
 export const HAZE = "#17123F";
@@ -17,8 +19,9 @@ void main(){
 }`;
 
 function Sky({ accent }: { accent: string }) {
-  const uniforms = useMemo(() => ({ uAccent: { value: new Color() }, uHaze: { value: new Color(HAZE) }, uTop: { value: new Color("#04031A") } }), []);
-  useEffect(() => void uniforms.uAccent.value.set(accent), [accent, uniforms]);
+  const uniforms = useMemo(() => ({ uAccent: { value: new Color(accent) }, uHaze: { value: new Color(HAZE) }, uTop: { value: new Color("#04031A") } }), []);
+  const target = useMemo(() => new Color(accent), [accent]);
+  useFrame((_, delta) => void uniforms.uAccent.value.lerp(target, 1 - Math.exp(-2.5 * capDelta(delta))));
   return (
     <mesh>
       <sphereGeometry args={[95, 32, 16]} />
