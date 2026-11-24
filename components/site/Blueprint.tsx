@@ -293,10 +293,12 @@ export function Blueprint({ lang }: { lang: Lang }) {
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
     let w = 0;
     let h = 0;
+    let R = 220;
     const fit = () => {
       w = el.clientWidth;
       h = el.clientHeight;
-      el.style.setProperty("--rpx", String(Math.min(Math.max(130, w * 0.19), 290)));
+      R = Math.min(Math.max(130, w * 0.19), 290);
+      el.style.setProperty("--rpx", String(R));
       el.style.setProperty("--s", Math.max(Math.min(w / 2300, h / 1250), Math.min(w / 1000, h / 1500)).toFixed(4));
     };
     const cv = sparks.current!;
@@ -337,13 +339,19 @@ export function Blueprint({ lang }: { lang: Lang }) {
       const k = still ? 1 : 0.12;
       x += (tx - x) * k;
       y += (ty - y) * k;
+      const box = el.getBoundingClientRect();
+      const fades = Array.from(tags, (tag) => {
+        const b = tag.getBoundingClientRect();
+        const far = Math.hypot(b.left + b.width / 2 - box.left - x, b.bottom - box.top - y) / R;
+        return Math.max(0, Math.min(1, 2.1 - far * 1.5)).toFixed(2);
+      });
+      tags.forEach((tag, i) => (tag.style.opacity = fades[i]));
       el.style.setProperty("--mx", `${x.toFixed(1)}px`);
       el.style.setProperty("--my", `${y.toFixed(1)}px`);
       if (!still) {
         el.style.setProperty("--tz", `${((x / w - 0.5) * 5).toFixed(2)}deg`);
         el.style.setProperty("--tx", `${((y / h - 0.5) * -4).toFixed(2)}deg`);
       }
-      const R = parseFloat(getComputedStyle(el).getPropertyValue("--rpx")) || 220;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
       ctx.globalCompositeOperation = "lighter";
@@ -368,16 +376,16 @@ export function Blueprint({ lang }: { lang: Lang }) {
         ctx.arc(d.x, d.y, rad * 3.2, 0, 7);
         ctx.fill();
       }
-      const box = el.getBoundingClientRect();
-      for (const tag of tags) {
-        const b = tag.getBoundingClientRect();
-        const far = Math.hypot(b.left + b.width / 2 - box.left - x, b.bottom - box.top - y) / R;
-        tag.style.opacity = Math.max(0, Math.min(1, 2.1 - far * 1.5)).toFixed(2);
-      }
       raf = requestAnimationFrame(frame);
     };
-    raf = requestAnimationFrame(frame);
+    // the loop only runs while the plan is on screen
+    const seen = new IntersectionObserver(([e]) => {
+      cancelAnimationFrame(raf);
+      if (e.isIntersecting) raf = requestAnimationFrame(frame);
+    });
+    seen.observe(el);
     return () => {
+      seen.disconnect();
       cancelAnimationFrame(raf);
       removeEventListener("resize", size);
       el.removeEventListener("pointermove", move);

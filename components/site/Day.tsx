@@ -3,7 +3,7 @@
 import { useEffect, useRef, type CSSProperties } from "react";
 import { COPY, type Lang } from "@/lib/copy";
 import { dayMinutes, weights } from "@/lib/day";
-import { clock, sceneProgress, span } from "@/lib/scroll";
+import { clock, glide, sceneProgress, span } from "@/lib/scroll";
 
 const at = (a: number, b: number) => ({ "--a": a, "--b": b }) as CSSProperties;
 const PLATES = ["07", "11", "16", "21"];
@@ -17,13 +17,19 @@ export function Day({ lang }: { lang: Lang }) {
   useEffect(() => {
     const el = root.current!;
     const pin = el.querySelector<HTMLElement>(".pin")!;
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf = 0;
     let mouse = false;
+    let p = -1;
+    let last = 0;
 
-    const frame = () => {
+    const frame = (now: number) => {
       raf = 0;
       const r = el.getBoundingClientRect();
-      const p = sceneProgress(-r.top, r.height, innerHeight);
+      const target = sceneProgress(-r.top, r.height, innerHeight);
+      p = p < 0 || still ? target : glide(p, target, Math.min((now - last) / 1000, 0.05));
+      last = now;
+      if (p !== target) raf = requestAnimationFrame(frame);
       const minutes = dayMinutes(p);
       el.style.setProperty("--p", p.toFixed(4));
       el.style.setProperty("--open", span(p, 0.86, 0.95).toFixed(3));

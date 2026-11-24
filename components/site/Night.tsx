@@ -89,8 +89,14 @@ export function Night({ lang }: { lang: Lang }) {
       }
       raf = requestAnimationFrame(frame);
     };
-    raf = requestAnimationFrame(frame);
+    const seen = new IntersectionObserver(([e]) => {
+      cancelAnimationFrame(raf);
+      last = performance.now();
+      if (e.isIntersecting) raf = requestAnimationFrame(frame);
+    });
+    seen.observe(el);
     return () => {
+      seen.disconnect();
       cancelAnimationFrame(raf);
       removeEventListener("resize", paint);
     };

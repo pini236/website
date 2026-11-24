@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type CSSProperties } from "react";
 import { COPY, type Lang } from "@/lib/copy";
-import { sceneProgress, span } from "@/lib/scroll";
+import { glide, sceneProgress, span } from "@/lib/scroll";
 
 const BUILD: [number, number] = [0.02, 0.86];
 // live.mp4 plays the arrival once, then repeats from here
@@ -22,16 +22,20 @@ export function Street({ lang }: { lang: Lang }) {
     const shop = live.current!;
     const loops = { scaf: scaf.current!, live: shop };
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let shown = 0;
+    let p = -1;
+    let last = 0;
+    let queued = -1;
     let raf = 0;
     let playing = "";
     // iOS only seeks a video that has been played once
     film.play().then(() => film.pause()).catch(() => {});
 
-    const frame = () => {
+    const frame = (now: number) => {
       raf = 0;
       const r = el.getBoundingClientRect();
-      const p = sceneProgress(-r.top, r.height, innerHeight);
+      const target = sceneProgress(-r.top, r.height, innerHeight);
+      p = p < 0 || still ? target : glide(p, target, Math.min((now - last) / 1000, 0.05));
+      last = now;
       const act = p < BUILD[0] ? "scaf" : p < BUILD[1] ? "build" : "live";
       el.style.setProperty("--p", p.toFixed(4));
       el.dataset.act = act;
@@ -41,15 +45,22 @@ export function Street({ lang }: { lang: Lang }) {
         playing = want;
         for (const [name, v] of Object.entries(loops)) name === want && !still ? v.play().catch(() => {}) : v.pause();
       }
-      const target = span(p, ...BUILD);
-      shown += (target - shown) * 0.2;
-      if (Math.abs(target - shown) < 0.001) shown = target;
-      else raf = requestAnimationFrame(frame);
-      if (film.duration) film.currentTime = shown * (film.duration - 0.05);
+      if (p !== target) raf = requestAnimationFrame(frame);
+      if (!film.duration) return;
+      const time = span(p, ...BUILD) * (film.duration - 0.05);
+      // asking for a new frame while one is still loading is what makes the film stutter
+      if (film.seeking) queued = time;
+      else if (Math.abs(film.currentTime - time) > 0.02) film.currentTime = time;
     };
     const kick = () => {
       raf ||= requestAnimationFrame(frame);
     };
+    const seeked = () => {
+      if (queued < 0) return;
+      film.currentTime = queued;
+      queued = -1;
+    };
+    film.addEventListener("seeked", seeked);
     const again = () => {
       shop.currentTime = LOOP;
       shop.play().catch(() => {});
@@ -63,6 +74,7 @@ export function Street({ lang }: { lang: Lang }) {
       removeEventListener("scroll", kick);
       removeEventListener("resize", kick);
       film.removeEventListener("loadedmetadata", kick);
+      film.removeEventListener("seeked", seeked);
       shop.removeEventListener("ended", again);
       cancelAnimationFrame(raf);
     };

@@ -1,6 +1,7 @@
 import { COPY, type Lang } from "@/lib/copy";
 import { Blueprint } from "./Blueprint";
 import { Close } from "./Close";
+import { Customers } from "./Customers";
 import { Day } from "./Day";
 import { Night } from "./Night";
 import { Rail } from "./Rail";
@@ -22,6 +23,7 @@ export function Home({ lang }: { lang: Lang }) {
         <p className="next">{c.day.next}</p>
       </section>
       <Blueprint lang={lang} />
+      <Customers lang={lang} />
       <section className="who">
         <div className="who-head">
           <div>
@@ -40,7 +42,6 @@ export function Home({ lang }: { lang: Lang }) {
             </li>
           ))}
         </ol>
-        <p className="quiet">{c.who.sample}</p>
       </section>
       <Close lang={lang} />
     </main>

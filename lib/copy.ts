@@ -19,7 +19,8 @@ export type Copy = {
     brain: { head: string; body: string };
     close: string;
   };
-  who: { eyebrow: string; head: string; body: string; steps: [string, string][]; sample: string };
+  who: { eyebrow: string; head: string; body: string; steps: [string, string][] };
+  clients: { eyebrow: string; head: string; body: string; next: string; nextBody: string; concept: string; yours: string; write: string };
   close: { eyebrow: string; head: string; body: string; button: string };
   foot: { built: string; privacy: string; remove: string; contact: string };
 };
@@ -77,7 +78,16 @@ export const COPY: Record<Lang, Copy> = {
         ["I build it and switch it on", "And I stay around after opening day."],
       ],
       body: "I'm Pini. I design it, build it and switch it on myself. You talk to me from the first message to opening day, and after.",
-      sample: "There's no wall of client logos here yet. The site you're scrolling is the sample.",
+    },
+    clients: {
+      eyebrow: "Already on the street",
+      head: "Real businesses. Lights on.",
+      body: "Some of the businesses I build for.",
+      next: "Next on the street",
+      nextBody: "Ideas I'd love to build. Not customers. Not yet.",
+      concept: "Concept, not a customer",
+      yours: "Your sign here",
+      write: "Message Pini",
     },
     close: {
       eyebrow: "Your street, your shop, your turn",
@@ -126,7 +136,16 @@ export const COPY: Record<Lang, Copy> = {
         ["אני בונה ומפעיל", "ונשאר איתכם גם אחרי יום ההשקה."],
       ],
       body: "אני פיני. אני מעצב, בונה ומפעיל הכול בעצמי. אתם מדברים איתי, מההודעה הראשונה ועד יום ההשקה, וגם אחריו.",
-      sample: "עדיין אין כאן קיר של לוגואים. האתר שאתם גוללים בו עכשיו הוא הדוגמה.",
+    },
+    clients: {
+      eyebrow: "כבר ברחוב",
+      head: "עסקים אמיתיים. האור דולק.",
+      body: "חלק מהעסקים שאני בונה בשבילם.",
+      next: "הבאים ברחוב",
+      nextBody: "רעיונות שהייתי שמח לבנות. לא לקוחות. עדיין לא.",
+      concept: "קונספט, לא לקוח",
+      yours: "השלט שלכם כאן",
+      write: "כתבו לפיני",
     },
     close: {
       eyebrow: "עכשיו תורכם",
