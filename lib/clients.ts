@@ -5,7 +5,7 @@ type Shop = { id: string; name: Record<Lang, string>; trade: Record<Lang, string
 export const CLIENTS: Shop[] = [
   { id: "shasha", name: { en: "Shasha Bakery", he: "שאשא בייקרי" }, trade: { en: "Bakery", he: "מאפייה" } },
   { id: "greece", name: { en: "Hair of Greece", he: "Hair of Greece" }, trade: { en: "Hair", he: "שיער" } },
-  { id: "lachmon", name: { en: "לחמון", he: "לחמון" }, trade: { en: "Bread", he: "לחם" } },
+  { id: "lachmon", name: { en: "לחמון", he: "לחמון" }, trade: { en: "Bread & Shabbat food, delivered", he: "קו חלוקה · לחם, חלות ואוכל לשבת" } },
   { id: "sari", name: { en: "sari-arch", he: "sari-arch" }, trade: { en: "Sari Steiner · Architecture", he: "Sari Steiner · אדריכלות" } },
 ];
 
