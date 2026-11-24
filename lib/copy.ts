@@ -20,7 +20,7 @@ export type Copy = {
     close: string;
   };
   who: { eyebrow: string; head: string; body: string; steps: [string, string][]; sample: string };
-  close: { head: string; body: string; button: string };
+  close: { eyebrow: string; head: string; body: string; button: string };
   foot: { built: string; privacy: string; remove: string; contact: string };
 };
 
@@ -80,6 +80,7 @@ export const COPY: Record<Lang, Copy> = {
       sample: "There's no wall of client logos here yet. The site you're scrolling is the sample.",
     },
     close: {
+      eyebrow: "Your street, your shop, your turn",
       head: "Tell me about your business.",
       body: "A short message is enough. I'll tell you honestly what I'd build first, and what I wouldn't.",
       button: "Message Pini",
@@ -128,6 +129,7 @@ export const COPY: Record<Lang, Copy> = {
       sample: "עדיין אין כאן קיר של לוגואים. האתר שאתם גוללים בו עכשיו הוא הדוגמה.",
     },
     close: {
+      eyebrow: "עכשיו תורכם",
       head: "ספרו לי על העסק שלכם.",
       body: "מספיקה הודעה קצרה. אגיד לכם בכנות מה הייתי בונה קודם, ומה בכלל לא.",
       button: "כתבו לפיני",

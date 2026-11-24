@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { COPY, type Lang } from "@/lib/copy";
 import { Blueprint } from "./Blueprint";
+import { Close } from "./Close";
 import { Day } from "./Day";
 import { Night } from "./Night";
 import { Rail } from "./Rail";
@@ -9,6 +9,8 @@ import "./site.css";
 
 export function Home({ lang }: { lang: Lang }) {
   const c = COPY[lang];
+  const dir = lang === "he" ? "/street/he" : "/street";
+  const shots = [`${dir}/scaf.jpg`, "/street/xray.jpg", `${dir}/live.jpg`];
   return (
     <main>
       <Rail lang={lang} />
@@ -21,30 +23,26 @@ export function Home({ lang }: { lang: Lang }) {
       </section>
       <Blueprint lang={lang} />
       <section className="who">
-        <div>
-          <p className="eyebrow">{c.who.eyebrow}</p>
-          <h2>{c.who.head}</h2>
-        </div>
-        <div>
+        <div className="who-head">
+          <div>
+            <p className="eyebrow">{c.who.eyebrow}</p>
+            <h2>{c.who.head}</h2>
+          </div>
           <p>{c.who.body}</p>
-          <ol className="steps">
-            {c.who.steps.map(([t, d]) => (
-              <li key={t}>
-                <b>{t}</b>
-                <span>{d}</span>
-              </li>
-            ))}
-          </ol>
-          <p className="quiet">{c.who.sample}</p>
         </div>
+        <ol className="steps">
+          {c.who.steps.map(([t, d], i) => (
+            <li key={t}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={shots[i]} alt="" loading="lazy" />
+              <b>{t}</b>
+              <span>{d}</span>
+            </li>
+          ))}
+        </ol>
+        <p className="quiet">{c.who.sample}</p>
       </section>
-      <section className="close">
-        <h2>{c.close.head}</h2>
-        <p>{c.close.body}</p>
-        <Link href="/contact" className="cta">
-          {c.close.button}
-        </Link>
-      </section>
+      <Close lang={lang} />
     </main>
   );
 }
