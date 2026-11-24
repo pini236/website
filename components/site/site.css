@@ -40,11 +40,23 @@
 .dbubble { max-width: 88%; padding: 10px 14px; border-radius: 16px; font-size: 15px; line-height: 1.35; }
 .dbubble.ask { justify-self: start; background: #2a2562; color: var(--ivory); }
 .dbubble.reply { justify-self: end; background: var(--gold); color: #1b1303; }
-.after { padding: clamp(80px, 11vw, 170px) var(--pad); background: var(--night); font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 4.4vw, 68px); line-height: 1.08; letter-spacing: -0.02em; text-wrap: balance; }
+.after { position: relative; isolation: isolate; overflow: hidden; padding: clamp(80px, 11vw, 170px) var(--pad); background: var(--night); font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 4.4vw, 68px); line-height: 1.08; letter-spacing: -0.02em; text-wrap: balance; }
+.after::before { content: ""; position: absolute; z-index: -1; inset: 0; background: url(/street/xray.jpg) 50% 62% / cover; opacity: 0.2; -webkit-mask-image: linear-gradient(to right, transparent 20%, #000 75%), linear-gradient(transparent, #000 30%, #000 70%, transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent 20%, #000 75%), linear-gradient(transparent, #000 30%, #000 70%, transparent); mask-composite: intersect; }
+[dir="rtl"] .after::before { scale: -1 1; }
+.after p { max-width: 18ch; }
+.after .next { position: relative; max-width: 40ch; margin-top: 44px; padding-top: 26px; font-family: var(--font-body), sans-serif; font-weight: 400; font-size: clamp(17px, 1.5vw, 22px); line-height: 1.45; letter-spacing: 0; color: var(--soft); }
+.after .next::before { content: ""; position: absolute; inset-block-start: 0; inset-inline-start: 0; width: 56px; height: 2px; background: var(--gold); }
 
-.who { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 6vw, 100px); padding: clamp(70px, 10vw, 150px) var(--pad); border-top: 1px solid var(--line); }
+.who { position: relative; background: radial-gradient(55% 90% at 100% 0, rgba(123, 88, 198, 0.24), transparent 70%), radial-gradient(40% 70% at 0 100%, rgba(255, 193, 77, 0.07), transparent 70%); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 6vw, 100px); padding: clamp(70px, 10vw, 150px) var(--pad); border-top: 1px solid var(--line); }
 .who p { font-size: clamp(19px, 1.8vw, 26px); line-height: 1.45; max-width: 32ch; }
 .who .quiet { margin-top: 22px; font-size: 16px; color: var(--mute); }
+.who .eyebrow { font-size: 13px; max-width: none; }
+.who h2 { font-size: clamp(34px, 4.4vw, 72px); }
+.steps { list-style: none; counter-reset: step; margin: 34px 0 0; padding: 0; max-width: 520px; border-top: 1px solid var(--line); }
+.steps li { counter-increment: step; display: grid; grid-template-columns: 52px 1fr; padding: 18px 0; border-bottom: 1px solid var(--line); }
+.steps li::before { content: "0" counter(step); grid-row: span 2; font-family: var(--font-display); font-weight: 800; font-size: 15px; line-height: 1.7; color: var(--gold); }
+.steps b { font-size: clamp(17px, 1.35vw, 20px); font-weight: 600; }
+.steps span { margin-top: 2px; font-size: 16px; line-height: 1.45; color: var(--soft); }
 .close { padding: clamp(80px, 12vw, 190px) var(--pad); border-top: 1px solid var(--line); background: radial-gradient(70% 90% at 50% 110%, rgba(255, 193, 77, 0.2) 0, transparent 70%); }
 .close h2 { font-size: clamp(40px, 7vw, 116px); max-width: 14ch; }
 .close p { margin: 26px 0 36px; font-size: clamp(18px, 1.6vw, 23px); color: var(--soft); max-width: 40ch; }

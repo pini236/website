@@ -1,11 +1,19 @@
-.story { position: relative; --acc: #ffc14d; --P: 0; --day: 0; --m: 1; --ink: #16132e; --paper: #f6f1e8; }
+.story { position: relative; --acc: #ffc14d; --P: 0; --day: 0; --m: 1; --ink: #16132e; --paper: #f6f1e8; --shift: 15vw; --bg: 1; --side: right; }
+[dir="rtl"] .story { --shift: -15vw; --side: left; }
+.story[data-at="rewind"] { --bg: 0.42; }
+.story[data-at="brain"] { --bg: 0.2; }
+.story[data-at="face"] { --bg: 0.1; }
 .story .stage { position: sticky; top: 0; height: 100svh; overflow: hidden; background: var(--night); }
 .story .eyebrow { color: var(--acc); }
 .story .sky, .story .sky > * { position: absolute; inset: 0; }
 .story .sky { background: radial-gradient(120% 80% at 50% 0%, #19144f 0%, var(--night) 62%); }
 .story .stars { width: 100%; height: 100%; opacity: calc(1 - var(--day) * 1.7); transform: translateY(calc(var(--P) * -6% * var(--m))) scale(1.14); }
-.story .dawn { background: linear-gradient(to top, #ffe9d2 0%, #ffc39a 9%, #f0808f 25%, #7b58c6 50%, #241a63 76%, #0b0920 100%); opacity: var(--day); }
+.story .dawn { background: linear-gradient(to top, #ffe9d2 0%, #ffc39a 9%, #f0808f 25%, #7b58c6 50%, #241a63 76%, #0b0920 100%); opacity: calc(var(--day) * 0.75); }
 .story .glow { background: radial-gradient(62% 52% at 80% 112%, color-mix(in srgb, var(--acc) 50%, transparent), transparent 70%); opacity: calc(0.6 * (1 - var(--day))); }
+.story .lot { transform: translateX(var(--shift)); -webkit-mask-image: linear-gradient(to var(--side), transparent 0, #000 34%); mask-image: linear-gradient(to var(--side), transparent 0, #000 34%); opacity: var(--bg); transition: opacity 0.9s; }
+.story .lot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; }
+.story .lot .am { opacity: clamp(0, calc(var(--day) * 1.45), 1); }
+.story .sky::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to var(--side), rgba(11, 9, 32, 0.88) 0, rgba(11, 9, 32, 0.5) 36%, transparent 60%), linear-gradient(to top, rgba(11, 9, 32, 0.85) 0, transparent 18%); }
 .story .layer { position: absolute; inset: 0; visibility: hidden; --p: 0; }
 .story .layer.on { visibility: visible; }
 .story .rv, .story .rise, .story .set, .story .tv {
@@ -43,45 +51,79 @@
 .story .line { position: absolute; inset: 0 0 auto 0; font-family: var(--font-display), sans-serif; font-weight: 800; font-size: clamp(30px, 4.5vw, 74px); line-height: 1.04; letter-spacing: -0.02em; text-wrap: balance; transform-origin: 0 0; }
 .story .phone {
   --pw: min(300px, 34svh); position: relative; flex: none; width: var(--pw); aspect-ratio: 300 / 615; font-size: calc(var(--pw) / 21.5); line-height: 1.4;
-  padding: calc(var(--pw) * 0.034); border-radius: calc(var(--pw) * 0.16); background: #060516; border: 1px solid rgba(244, 239, 255, 0.22);
-  box-shadow: 0 0 0 calc(var(--pw) * 0.018) #1a1644, 0 50px 120px -30px #000, 0 0 150px -40px var(--acc);
+  padding: calc(var(--pw) * 0.036); border-radius: calc(var(--pw) * 0.165);
+  background: linear-gradient(135deg, #6f6aa8 0%, #2a2752 18%, #15132f 50%, #2f2b5c 82%, #8480bb 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28), inset 0 0 0 calc(var(--pw) * 0.012) #0a0919, inset 0 0 calc(var(--pw) * 0.03) calc(var(--pw) * 0.02) #000, 0 60px 120px -30px #000, 0 20px 40px -12px rgba(0, 0, 0, 0.7), 0 0 150px -40px var(--acc);
 }
-.story .screen { position: relative; height: 100%; overflow: hidden; border-radius: calc(var(--pw) * 0.128); background: linear-gradient(165deg, #1d1758, #0a0822 72%); }
-.story .screen::before { content: ""; position: absolute; z-index: 2; inset-inline-start: 50%; top: 0.8em; width: 5.6em; height: 1.55em; margin-inline-start: -2.8em; border-radius: 99px; background: #000; }
-.story .night .phone { position: absolute; inset-inline-end: 13vw; top: 50%; margin-top: calc(var(--pw) * -1.025); }
-.story .lock { display: flex; flex-direction: column; align-items: center; height: 100%; padding: 3.6em 0.9em 1em; text-align: center; }
+.story .key { position: absolute; width: calc(var(--pw) * 0.012); border-radius: 2px; background: linear-gradient(#5d5990, #23204a); }
+.story .k1 { left: calc(var(--pw) * -0.011); top: 19%; height: 5%; }
+.story .k2 { left: calc(var(--pw) * -0.011); top: 27%; height: 9%; box-shadow: 0 calc(var(--pw) * 0.24) 0 0 #3a3668; }
+.story .k3 { right: calc(var(--pw) * -0.011); top: 31%; height: 14%; }
+.story .screen { position: relative; height: 100%; overflow: hidden; isolation: isolate; border-radius: calc(var(--pw) * 0.13); background: linear-gradient(165deg, #1d1758, #0a0822 72%); }
+.story .screen::before { content: ""; position: absolute; z-index: 3; inset-inline-start: 50%; top: 0.75em; width: 5.8em; height: 1.65em; margin-inline-start: -2.9em; border-radius: 99px; background: radial-gradient(circle at 78% 50%, #26265a 0, #0c0c1c 0.22em, #000 0.3em); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04); }
+.story .screen::after { content: ""; position: absolute; z-index: 4; inset: 0; pointer-events: none; background: linear-gradient(118deg, rgba(255, 255, 255, 0.13) 0, rgba(255, 255, 255, 0.03) 24%, transparent 38%); }
+.story .status { position: absolute; z-index: 3; inset: 0.95em 1.7em auto; display: flex; justify-content: space-between; align-items: center; height: 1.3em; font-size: 0.82em; font-weight: 600; color: var(--ivory); }
+.story .status svg { height: 0.82em; fill: currentColor; }
+.story .status .s { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; opacity: 0.9; }
+.story .homebar { position: absolute; z-index: 3; left: 50%; bottom: 0.45em; width: 34%; height: 0.28em; margin-left: -17%; border-radius: 9px; background: var(--ivory); opacity: 0.85; }
+.story .light .status { color: var(--ink); }
+.story .light .homebar { background: var(--ink); }
+.story .night .phone { position: absolute; inset-inline-end: 6vw; top: 50%; margin-top: calc(var(--pw) * -1.025); }
+.story .lock { display: flex; flex-direction: column; align-items: center; height: 100%; padding: 3.3em 0.9em 1.4em; text-align: center; background: radial-gradient(90% 46% at 12% 104%, rgba(255, 150, 90, 0.5), transparent 62%), radial-gradient(85% 44% at 96% 76%, rgba(150, 96, 255, 0.5), transparent 66%), radial-gradient(80% 36% at 50% -4%, #3d32b8, transparent 72%), linear-gradient(#17124a, #07061a); }
+.story .padlock { width: 1.25em; margin-bottom: 0.5em; fill: var(--ivory); opacity: 0.9; }
+.story .lock-tools { display: flex; justify-content: space-between; width: 100%; margin-top: auto; padding: 0 0.7em 0.5em; }
+.story .lock-tools svg { width: 3em; height: 3em; padding: 0.82em; border-radius: 50%; fill: var(--ivory); background: rgba(244, 239, 255, 0.16); backdrop-filter: blur(10px); }
 .story .lock-day { font-size: 0.95em; font-weight: 500; color: var(--soft); }
-.story .lock-time { font-family: var(--font-body), sans-serif; font-weight: 500; font-size: 4.4em; line-height: 1.05; margin-bottom: 0.3em; }
+.story .lock-time { font-family: var(--font-body), sans-serif; font-weight: 600; font-size: 4.9em; line-height: 1; letter-spacing: -0.03em; margin-bottom: 0.25em; text-shadow: 0 0.04em 0.4em rgba(0, 0, 0, 0.35); }
 .story .lock-time i { width: 0.58em; }
 .story .lock-time i:nth-child(3) { width: 0.3em; }
-.story .notif { --dy: 16px; display: flex; gap: 0.7em; width: 100%; margin-top: 0.6em; padding: 0.75em; border-radius: 1.25em; text-align: start; font-size: 0.9em; line-height: 1.32; background: rgba(244, 239, 255, 0.13); border: 1px solid rgba(244, 239, 255, 0.1); backdrop-filter: blur(14px); }
+.story .notif { --dy: 16px; display: flex; gap: 0.7em; width: 100%; margin-top: 0.6em; padding: 0.75em; border-radius: 1.25em; text-align: start; font-size: 0.9em; line-height: 1.32; background: rgba(244, 239, 255, 0.16); border: 1px solid rgba(244, 239, 255, 0.14); backdrop-filter: blur(14px); box-shadow: 0 0.6em 1.6em -0.6em rgba(0, 0, 0, 0.6); }
 .story .notif > div { flex: 1; min-width: 0; }
 .story .notif-top { display: flex; justify-content: space-between; gap: 0.5em; }
 .story .notif-top > span { position: relative; font-size: 0.85em; color: var(--mute); }
 .story .notif-top span span { --dy: 0px; display: inline-block; }
 .story .swap { position: absolute; inset-inline-end: 0; top: 0; white-space: nowrap; }
 .story .avatar { flex: none; display: grid; place-items: center; width: 2.3em; height: 2.3em; border-radius: 0.7em; background: var(--acc); color: var(--night); font-family: var(--font-display), sans-serif; font-weight: 800; }
-.story .rewind { display: grid; place-items: center; padding: 0 var(--pad); text-align: center; }
-.story .dial { position: absolute; inset-inline-start: 50%; top: 50%; width: min(118svh, 112vw); translate: -50% -50%; fill: none; stroke: rgba(244, 239, 255, 0.2); stroke-width: 0.3; overflow: visible; opacity: calc(min(1, var(--p) * 10) * (1 - clamp(0, calc((var(--p) - 0.9) * 10), 1))); }
-.story .dial g, .story .dial path { transform-origin: 100px 100px; }
-.story .dial g { rotate: calc(var(--p) * -150deg * var(--m)); }
-.story .dial path { stroke: var(--acc); stroke-width: 0.7; stroke-linecap: round; rotate: calc((1 - clamp(0, calc((var(--p) - 0.05) / 0.55), 1)) * 1500deg * var(--m)); }
-.story .rewind-copy { position: relative; }
-.story .tape { display: flex; align-items: center; justify-content: center; gap: 0.7em; font-weight: 600; font-size: clamp(15px, 1.5vw, 21px); letter-spacing: 0.22em; color: var(--acc); }
+.story .rewind { display: grid; align-items: center; padding: 0 var(--pad); }
+.story .dial {
+  position: absolute; inset-inline-end: 7vw; top: 50%; width: min(84svh, 46vw); translate: 0 -50%; fill: none; stroke: rgba(244, 239, 255, 0.34); stroke-width: 0.8; overflow: visible;
+  --k: clamp(0, calc((var(--p) - 0.05) / 0.55), 1); --ke: calc(var(--k) * var(--k) * (3 - 2 * var(--k)));
+  opacity: calc(min(1, var(--p) * 10) * (1 - clamp(0, calc((var(--p) - 0.9) * 10), 1))); filter: drop-shadow(0 0 30px rgba(120, 100, 255, 0.35));
+}
+.story .dial .face-fill { stroke: none; }
+.story .dial .thin { stroke-width: 0.35; stroke: rgba(244, 239, 255, 0.22); }
+.story .dial .ticks line { stroke: rgba(244, 239, 255, 0.4); stroke-width: 0.6; }
+.story .dial .ticks .h { stroke: var(--ivory); stroke-width: 1.8; stroke-linecap: round; }
+.story .dial .nums text { fill: rgba(244, 239, 255, 0.7); stroke: none; font: 800 13px var(--font-display), sans-serif; text-anchor: middle; dominant-baseline: central; }
+.story .dial .lost { stroke: var(--acc); stroke-width: 3.2; stroke-linecap: round; stroke-dasharray: calc((1 - var(--ke)) * 222.5) 360; filter: drop-shadow(0 0 6px var(--acc)); }
+.story .dial .pin-a, .story .dial .cap { fill: var(--acc); stroke: none; }
+.story .dial .cap { stroke: #0b0920; stroke-width: 2; }
+.story .dial .hand { transform-origin: 200px 200px; fill: var(--ivory); stroke: none; opacity: 0.5; }
+.story .dial .hr { rotate: calc((1872 - var(--ke) * 445) * 0.5deg); }
+.story .dial .mn { fill: var(--acc); opacity: 0.75; rotate: calc((1872 - var(--ke) * 445) * 6deg); filter: drop-shadow(0 0 5px var(--acc)); }
+.story .rewind-copy { position: relative; max-width: 42vw; }
+.story .tape { display: flex; align-items: center; gap: 0.7em; font-weight: 600; font-size: clamp(15px, 1.5vw, 21px); letter-spacing: 0.22em; color: var(--acc); }
 .story .tape > span { animation: blink 0.9s steps(2, jump-none) infinite; }
 .story .tape .clock { font-size: 1.7em; letter-spacing: 0; color: var(--ivory); }
 @keyframes blink { to { opacity: 0.25; } }
-.story .rewind h2 { font-size: clamp(44px, 8.6vw, 150px); margin: 0.12em 0 0.22em; }
-.story .rewind .lead { margin: 0 auto; }
+.story .rewind h2 { font-size: clamp(40px, 5.6vw, 96px); margin: 0.2em 0 0.3em; }
+.story .rewind .lead { margin: 0; }
 .story .brain, .story .face, .story .morning { display: grid; align-items: center; padding: 0 var(--pad); }
 .story .brain { grid-template-columns: 1fr auto 1fr; gap: 5vw; }
 .story .title { position: relative; z-index: 2; }
 .story .title h2 { font-size: clamp(44px, 6.4vw, 108px); }
 .story .title .lead { max-width: 30ch; margin-top: 18px; font-size: clamp(16px, 1.25vw, 19px); }
-.story .chat { display: flex; flex-direction: column; gap: 0.6em; height: 100%; padding: 3.1em 0.8em 1em; }
-.story .chat header { display: flex; align-items: center; gap: 0.6em; margin-bottom: 0.3em; padding-bottom: 0.7em; border-bottom: 1px solid var(--line); }
+.story .chat { display: flex; flex-direction: column; gap: 0.55em; height: 100%; padding: 3em 0.8em 1.5em; background: radial-gradient(120% 40% at 50% 0, #2a2380, transparent 70%), linear-gradient(#141042, #08071c); }
+.story .chat header { display: flex; align-items: center; gap: 0.55em; margin: 0 -0.8em 0.1em; padding: 0 0.8em 0.65em; border-bottom: 1px solid var(--line); }
+.story .back { width: 0.55em; fill: none; stroke: var(--acc); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+[dir="rtl"] .story .back { scale: -1 1; }
+.story .chat header .avatar { width: 2.1em; height: 2.1em; border-radius: 50%; }
+.story .stamp { align-self: center; padding: 0.2em 0.8em; border-radius: 99px; font-size: 0.68em; color: var(--mute); background: rgba(244, 239, 255, 0.07); }
+.story .composer { display: flex; align-items: center; gap: 0.5em; margin-top: auto; padding: 0.35em; padding-inline-start: 0.9em; border-radius: 99px; font-size: 0.85em; color: var(--mute); background: rgba(244, 239, 255, 0.08); border: 1px solid var(--line); }
+.story .composer span { flex: 1; }
+.story .composer svg { width: 1.9em; height: 1.9em; padding: 0.35em; border-radius: 50%; background: var(--acc); fill: none; stroke: var(--night); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
 .story .chat header p { flex: 1; display: grid; line-height: 1.2; }
-.story .chat header p span { font-size: 0.75em; color: var(--acc); }
+.story .chat header p span { font-size: 0.75em; color: #7be0a4; }
 .story .chat header .clock { font-family: var(--font-body), sans-serif; font-weight: 500; font-size: 0.8em; color: var(--mute); }
 .story .chat header .clock i { width: auto; }
 .story .bubble { --dy: 14px; max-width: 88%; padding: 0.6em 0.8em; border-radius: 1.15em; font-size: 0.93em; line-height: 1.35; }
@@ -162,18 +204,19 @@
 .story .mini ul { display: grid; gap: 0.45em; margin: 0 0.8em; padding: 0; list-style: none; }
 .story .mini li { padding: 0.6em 0.8em; border-radius: 0.8em; background: #fff; font-size: 0.88em; }
 .story .mini em { margin: auto 0.8em 0.9em; padding: 0.7em; border-radius: 99px; background: var(--fg); color: var(--cream); font-style: normal; font-weight: 600; text-align: center; }
-.story .morning { grid-template-columns: 1fr auto; gap: 6vw; padding-inline-end: 13vw; }
+.story .morning { grid-template-columns: 1fr auto; gap: 6vw; padding-inline-end: 6vw; }
 .story .morning .title .clock { display: block; font-size: clamp(56px, 8.6vw, 150px); line-height: 0.9; margin-inline-start: -0.04em; }
 .story .morning h2 { max-width: 12ch; margin-top: 0.35em; font-size: clamp(34px, 4.6vw, 76px); }
 .story .made-up { max-width: 38ch; margin-top: 22px; font-size: 14px; color: var(--soft); }
-.story .digest { display: flex; flex-direction: column; gap: 0.7em; height: 100%; padding: 3.7em 1em 1em; background: linear-gradient(170deg, #fff7ec, #ffe2c9); color: var(--ink); }
+.story .digest { display: flex; flex-direction: column; gap: 0.6em; height: 100%; padding: 3.5em 0.9em 1.5em; background: radial-gradient(110% 40% at 100% 0, #ffd0a3, transparent 70%), linear-gradient(170deg, #fff7ec, #ffe2c9); color: var(--ink); }
 .story .digest .eyebrow { margin: 0; font-size: 0.68em; color: #8f5a3a; }
 .story .digest-name { margin-bottom: 0.3em; font-family: var(--font-display), sans-serif; font-size: 1.7em; line-height: 1.1; }
 .story .digest-row { --dy: 18px; display: flex; gap: 0.7em; padding: 0.8em; border-radius: 1.1em; background: #fff; box-shadow: 0 8px 22px -12px rgba(22, 19, 46, 0.35); }
-.story .digest-row svg { width: 1.5em; height: 1.5em; color: color-mix(in srgb, var(--acc) 70%, var(--ink)); }
+.story .digest-row svg { width: 1.7em; height: 1.7em; padding: 0.32em; border-radius: 50%; background: #1f8a55; color: #fff; }
+.story .digest-foot { --dy: 10px; margin-top: auto; padding: 0.75em 0.9em; border-radius: 1em; font-size: 0.82em; font-weight: 600; line-height: 1.3; text-align: center; background: var(--ink); color: #fff3e2; }
 .story .digest-row p { display: grid; line-height: 1.25; }
 .story .digest-row span { font-size: 0.85em; color: #6b6480; }
-.story .hud { position: absolute; z-index: 3; inset-inline-start: var(--pad); inset-inline-end: var(--pad); bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; font-size: 12px; color: color-mix(in srgb, var(--ink) calc(clamp(0, (var(--day) - 0.8) * 5, 1) * 100%), var(--soft)); opacity: clamp(0, calc(var(--P) * 80 - 0.8), 1); }
+.story .hud { position: absolute; z-index: 3; inset-inline-start: var(--pad); inset-inline-end: var(--pad); bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; font-size: 12px; color: var(--soft); opacity: clamp(0, calc(var(--P) * 80 - 0.8), 1); }
 .story .hud ol { display: flex; gap: 22px; padding: 0; list-style: none; }
 .story .hud li { opacity: 0.5; transition: opacity 0.3s; }
 .story .hud li[aria-current] { opacity: 1; font-weight: 600; }
@@ -185,9 +228,19 @@
 .story .lines { top: 92px; width: auto; inset-inline-end: var(--pad); }
 .story .line { font-size: 7.6vw; }
 .story .phone { --pw: min(236px, 29svh); }
+.story { --bg: 0.6; }
+.story .lot { inset: auto 0 0 0; height: 114vw; transform: none; -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 24%); mask-image: linear-gradient(to bottom, transparent 0, #000 24%); }
+.story .lot img { inset: 0 auto 0 -51vw; width: 202vw; object-position: 50% 100%; }
+.story .sky::after { background: linear-gradient(to top, rgba(11, 9, 32, 0.85) 0, transparent 18%); }
 .story .night .phone, .story .brain .phone, .story .morning .phone { position: absolute; inset-inline-start: 50%; inset-inline-end: auto; margin-inline-start: calc(var(--pw) / -2); }
 .story .night .phone { top: 60%; }
 .story .bigclock { font-size: 18.6vw; bottom: 9svh; }
+.story .rewind { align-content: end; justify-items: center; padding-bottom: 15svh; text-align: center; }
+.story .rewind-copy { max-width: none; }
+.story .tape { justify-content: center; }
+.story .rewind .lead { margin: 0 auto; }
+.story .dial { inset-inline-end: 50%; top: 11svh; width: min(78vw, 40svh); translate: 50% 0; }
+[dir="rtl"] .story .dial { translate: -50% 0; }
 .story .brain, .story .face, .story .morning { display: block; padding: 0; }
 .story .title { position: absolute; inset-inline-start: var(--pad); inset-inline-end: var(--pad); top: 84px; }
 .story .title h2 { font-size: 11vw; }

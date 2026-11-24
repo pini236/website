@@ -15,12 +15,26 @@ export function Home({ lang }: { lang: Lang }) {
       <Street lang={lang} />
       <Night lang={lang} />
       <Day lang={lang} />
-      <p className="after">{c.day.close}</p>
+      <section className="after">
+        <p>{c.day.close}</p>
+        <p className="next">{c.day.next}</p>
+      </section>
       <Blueprint lang={lang} />
       <section className="who">
-        <h2>{c.who.head}</h2>
+        <div>
+          <p className="eyebrow">{c.who.eyebrow}</p>
+          <h2>{c.who.head}</h2>
+        </div>
         <div>
           <p>{c.who.body}</p>
+          <ol className="steps">
+            {c.who.steps.map(([t, d]) => (
+              <li key={t}>
+                <b>{t}</b>
+                <span>{d}</span>
+              </li>
+            ))}
+          </ol>
           <p className="quiet">{c.who.sample}</p>
         </div>
       </section>

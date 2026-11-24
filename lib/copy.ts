@@ -9,6 +9,8 @@ export type Copy = {
   face: { head: string; items: string[] };
   lights: { head: string; sub: string; items: string[]; ai: string };
   day: {
+    kicker: string;
+    next: string;
     lens: string;
     morning: { title: string; orders: string[] };
     noon: { title: string; ask: string; reply: string };
@@ -17,7 +19,7 @@ export type Copy = {
     brain: { head: string; body: string };
     close: string;
   };
-  who: { head: string; body: string; sample: string };
+  who: { eyebrow: string; head: string; body: string; steps: [string, string][]; sample: string };
   close: { head: string; body: string; button: string };
   foot: { built: string; privacy: string; remove: string; contact: string };
 };
@@ -56,6 +58,8 @@ export const COPY: Record<Lang, Copy> = {
       ai: "Yes, it's AI. You won't need to care how. Here's one night.",
     },
     day: {
+      kicker: "That was one night. This is every day after.",
+      next: "Everything you just watched is made of seven blocks. Here they are, side by side.",
       lens: "Move your mouse. See what's underneath.",
       morning: { title: "Morning. Three orders came in overnight.", orders: ["New order · pickup at 9:00", "New order · delivery", "New order · pickup at 10:30"] },
       noon: { title: "A customer asks about her delivery. Answered in a minute. Not by you.", ask: "Where's my order?", reply: "On its way. About 15 minutes." },
@@ -65,7 +69,13 @@ export const COPY: Record<Lang, Copy> = {
       close: "You're still the heart of it. You're just not the whole staff anymore.",
     },
     who: {
+      eyebrow: "Who builds all this",
       head: "One studio. One person.",
+      steps: [
+        ["You write to me", "A few lines about your business are enough."],
+        ["I answer with a plan", "What I'd build first, and what I'd leave out."],
+        ["I build it and switch it on", "And I stay around after opening day."],
+      ],
       body: "I'm Pini. I design it, build it and switch it on myself. You talk to me from the first message to opening day, and after.",
       sample: "There's no wall of client logos here yet. The site you're scrolling is the sample.",
     },
@@ -96,6 +106,8 @@ export const COPY: Record<Lang, Copy> = {
       ai: "כן, זו בינה מלאכותית. אתם לא צריכים להבין איך היא עובדת. הנה לילה אחד.",
     },
     day: {
+      kicker: "זה היה לילה אחד. וכך נראה כל יום אחריו.",
+      next: "כל מה שראיתם עכשיו בנוי משבע אבני בניין. הנה כולן, אחת ליד השנייה.",
       lens: "הזיזו את העכבר ותראו מה קורה מתחת.",
       morning: { title: "בוקר. בלילה נכנסו שלוש הזמנות.", orders: ["הזמנה חדשה · איסוף ב־9:00", "הזמנה חדשה · משלוח", "הזמנה חדשה · איסוף ב־10:30"] },
       noon: { title: "לקוחה שואלת איפה המשלוח. תוך דקה היא מקבלת תשובה. לא מכם.", ask: "איפה ההזמנה שלי?", reply: "בדרך אלייך. עוד רבע שעה בערך." },
@@ -105,7 +117,13 @@ export const COPY: Record<Lang, Copy> = {
       close: "אתם עדיין הלב של העסק. פשוט כבר לא כל הצוות.",
     },
     who: {
+      eyebrow: "מי בונה את כל זה",
       head: "סטודיו אחד. בן אדם אחד.",
+      steps: [
+        ["אתם כותבים לי", "כמה שורות על העסק מספיקות."],
+        ["אני חוזר עם תוכנית", "מה הייתי בונה קודם, ועל מה הייתי מוותר."],
+        ["אני בונה ומפעיל", "ונשאר איתכם גם אחרי יום ההשקה."],
+      ],
       body: "אני פיני. אני מעצב, בונה ומפעיל הכול בעצמי. אתם מדברים איתי, מההודעה הראשונה ועד יום ההשקה, וגם אחריו.",
       sample: "עדיין אין כאן קיר של לוגואים. האתר שאתם גוללים בו עכשיו הוא הדוגמה.",
     },

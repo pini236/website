@@ -74,6 +74,9 @@ export function Day({ lang }: { lang: Lang }) {
 
         <div className="acts">
           <div className="act">
+            <p className="eyebrow on" style={at(-1, 0.24)}>
+              {c.kicker}
+            </p>
             <h2 className="on" style={at(0.02, 0.24)}>
               {c.morning.title}
             </h2>

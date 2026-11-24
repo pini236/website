@@ -12,7 +12,7 @@ test("both languages tell the same night", () => {
   for (const lang of ["en", "he"] as const) {
     const { story, c } = STORY[lang];
     expect(story.steps).toHaveLength(4);
-    expect(story.morning).toHaveLength(3);
+    expect(story.morning).toHaveLength(4);
     expect(c.chapters).toHaveLength(SCENES.length);
   }
 });

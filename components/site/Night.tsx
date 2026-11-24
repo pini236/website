@@ -70,6 +70,7 @@ export function Night({ lang }: { lang: Lang }) {
           }
         }
       });
+      el.dataset.at = SCENES[at.index].id;
       setChapter(at.index);
     };
 
@@ -96,12 +97,18 @@ export function Night({ lang }: { lang: Lang }) {
   }, []);
 
   return (
-    <section ref={root} className="story" id="night" style={{ height: `${(STORY_LENGTH + 1) * 100}svh` } as CSSProperties}>
+    <section ref={root} className="story" id="night" data-at="night" style={{ height: `${(STORY_LENGTH + 1) * 100}svh` } as CSSProperties}>
       <div className="stage">
         <div className="sky" aria-hidden="true">
           <canvas ref={stars} className="stars" />
           <div className="dawn" />
           <div className="glow" />
+          <div className="lot">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/street/closed.jpg" alt="" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={`/street${lang === "he" ? "/he" : ""}/day-07.jpg`} alt="" className="am" />
+          </div>
         </div>
 
         <NightScene t={t} />

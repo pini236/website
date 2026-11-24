@@ -14,9 +14,30 @@ const Clock = ({ from, to, a, b, className = "", style }: { from: number; to: nu
   </span>
 );
 
-const Phone = ({ children, className = "", style }: { children: ReactNode; className?: string; style?: CSSProperties }) => (
+const Status = ({ time }: { time?: string }) => (
+  <div className="status" dir="ltr" aria-hidden="true">
+    <b>{time}</b>
+    <svg viewBox="0 0 58 12">
+      <path d="M0 7h3v5H0zM4.5 5h3v7h-3zM9 2.5h3V12H9zM13.5 0h3v12h-3z" />
+      <path className="s" d="M21.5 4.4a8.5 8.5 0 0 1 12 0M24 7a5 5 0 0 1 7 0" />
+      <circle cx="27.5" cy="10" r="1.3" />
+      <rect className="s" x="39.6" y="1.1" width="15" height="9.8" rx="3" />
+      <rect x="41.3" y="2.8" width="9.6" height="6.4" rx="1.5" />
+      <path d="M56 4h1.2v4H56z" />
+    </svg>
+  </div>
+);
+
+const Phone = ({ children, time, className = "", style }: { children: ReactNode; time?: string; className?: string; style?: CSSProperties }) => (
   <div className={`phone ${className}`} style={style}>
-    <div className="screen">{children}</div>
+    <i className="key k1" />
+    <i className="key k2" />
+    <i className="key k3" />
+    <div className="screen">
+      {children}
+      <Status time={time} />
+      <i className="homebar" />
+    </div>
   </div>
 );
 
@@ -72,6 +93,9 @@ export function Night({ t }: { t: StoryCopy }) {
 
       <Phone className="rise x" style={rv(0.14, 0.3, 0.97, 1)}>
         <div className="lock">
+          <svg className="padlock" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 10V7.5a5 5 0 0 1 10 0V10h1.5v10h-13V10Zm2.2 0h5.6V7.5a2.8 2.8 0 0 0-5.6 0Z" />
+          </svg>
           <p className="lock-day">{COPY.day}</p>
           <Clock from={NIGHT} to={MORNING} a={0.45} b={0.75} className="lock-time" />
           <Notif
@@ -91,6 +115,14 @@ export function Night({ t }: { t: StoryCopy }) {
             }
           />
           <Notif name={s.name} text={s.gone} when={COPY.now} className="rv" style={rv(0.75, 0.81)} />
+          <div className="lock-tools" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M8.5 3h7v3.2L13.8 9v11h-3.6V9L8.5 6.2Z" />
+            </svg>
+            <svg viewBox="0 0 24 24">
+              <path d="M4 8h3.4l1.3-2.2h6.6L16.6 8H20v10.5H4Zm8 2.3a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4Z" />
+            </svg>
+          </div>
         </div>
       </Phone>
     </div>
@@ -101,14 +133,38 @@ export function Rewind({ t }: { t: StoryCopy }) {
   const COPY = t.c;
   return (
     <div className="layer rewind" data-scene>
-      <svg className="dial" viewBox="0 0 200 200" aria-hidden="true">
-        <circle cx="100" cy="100" r="96" pathLength="1" />
-        <g>
+      <svg className="dial" viewBox="0 0 400 400" aria-hidden="true">
+        <defs>
+          <radialGradient id="dial-face">
+            <stop offset="0.55" stopColor="#1c1760" stopOpacity="0" />
+            <stop offset="0.86" stopColor="#2a2380" stopOpacity="0.5" />
+            <stop offset="1" stopColor="#0b0920" stopOpacity="0.75" />
+          </radialGradient>
+        </defs>
+        <circle className="face-fill" cx="200" cy="200" r="194" fill="url(#dial-face)" />
+        <circle cx="200" cy="200" r="194" />
+        <circle className="thin" cx="200" cy="200" r="188" />
+        <circle className="thin" cx="200" cy="200" r="150" />
+        <g className="ticks">
           {Array.from({ length: 60 }, (_, i) => (
-            <line key={i} x1="100" y1={i % 5 ? 7 : 4} x2="100" y2="11" transform={`rotate(${i * 6} 100 100)`} />
+            <line key={i} className={i % 5 ? "" : "h"} x1="200" y1={i % 5 ? 16 : 14} x2="200" y2={i % 5 ? 22 : 28} transform={`rotate(${i * 6} 200 200)`} />
           ))}
         </g>
-        <path d="M100 15V5" />
+        <g className="nums">
+          {Array.from({ length: 12 }, (_, i) => {
+            const a = ((i + 1) * Math.PI) / 6;
+            return (
+              <text key={i} x={(200 + 155 * Math.sin(a)).toFixed(1)} y={(200 - 155 * Math.cos(a)).toFixed(1)}>
+                {i + 1}
+              </text>
+            );
+          })}
+        </g>
+        <circle className="lost" cx="200" cy="200" r="150" pathLength="360" transform="rotate(263.5 200 200)" />
+        <circle className="pin-a" cx="183" cy="51" r="3.4" />
+        <path className="hand hr" d="M196.5 214 198 96h4l1.5 118Z" />
+        <path className="hand mn" d="M197.5 222 199 42h2l1.5 180Z" />
+        <circle className="cap" cx="200" cy="200" r="6" />
       </svg>
       <div className="rewind-copy rv x" style={rv(0, 0.1, 0.9, 1)}>
         <p className="tape">
@@ -133,9 +189,12 @@ export function Brain({ t }: { t: StoryCopy }) {
         <p className="lead">{COPY.agentSub}</p>
       </div>
 
-      <Phone className="rise x" style={rv(0, 0.1, 0.94, 1)}>
+      <Phone className="rise x" style={rv(0, 0.1, 0.94, 1)} time="23:47">
         <div className="chat">
           <header>
+            <svg className="back" viewBox="0 0 12 20" aria-hidden="true">
+              <path d="M10 2 2 10l8 8" />
+            </svg>
             <b className="avatar">{s.name[0]}</b>
             <p>
               <strong>{s.name}</strong>
@@ -143,6 +202,9 @@ export function Brain({ t }: { t: StoryCopy }) {
             </p>
             <Clock from={NIGHT} to={NIGHT + 1} a={0.6} b={0.61} />
           </header>
+          <p className="stamp" dir="ltr">
+            {COPY.day} · 23:47
+          </p>
           <p className="bubble them rv" style={rv(0.04, 0.1)}>
             {s.ask}
           </p>
@@ -162,6 +224,12 @@ export function Brain({ t }: { t: StoryCopy }) {
           <p className="bubble us rv" style={rv(0.7, 0.72)}>
             <Typed text={s.done} a={0.71} b={0.8} />
           </p>
+          <div className="composer" aria-hidden="true">
+            <span>{COPY.type}</span>
+            <svg viewBox="0 0 24 24">
+              <path d="M12 19V6m0 0-5.5 5.5M12 6l5.5 5.5" />
+            </svg>
+          </div>
         </div>
       </Phone>
 
@@ -300,7 +368,7 @@ export function Face({ t, he }: { t: StoryCopy; he: boolean }) {
         </div>
 
         <div className="app rv" style={rv(0.76, 0.87)}>
-          <Phone>
+          <Phone time="23:48">
             <div className="mini">
               <header>
                 <Mark he={he} />
@@ -335,17 +403,17 @@ export function Morning({ t }: { t: StoryCopy }) {
         <h2 className="rv" style={rv(0.1, 0.2)}>
           {COPY.morning}
         </h2>
-        <p className="made-up rv" style={rv(0.7, 0.78)}>
+        <p className="made-up rv" style={rv(0.76, 0.84)}>
           {COPY.madeUp}
         </p>
       </div>
 
-      <Phone className="rise" style={rv(0.08, 0.28)}>
+      <Phone className="rise light" style={rv(0.08, 0.28)} time="07:12">
         <div className="digest">
           <p className="eyebrow">{COPY.morningSub}</p>
           <strong className="digest-name">{s.name}</strong>
           {s.morning.map(([head, detail], i) => (
-            <div key={head} className="digest-row rv" style={rv(0.3 + i * 0.12, 0.38 + i * 0.12)}>
+            <div key={head} className="digest-row rv" style={rv(0.3 + i * 0.09, 0.38 + i * 0.09)}>
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m5 12.5 4.5 4.5L19 7.5" />
               </svg>
@@ -355,6 +423,9 @@ export function Morning({ t }: { t: StoryCopy }) {
               </p>
             </div>
           ))}
+          <p className="digest-foot rv" style={rv(0.68, 0.76)}>
+            {COPY.digestFoot}
+          </p>
         </div>
       </Phone>
     </div>

@@ -44,6 +44,8 @@ export type StoryCopy = {
     ago: string;
     awake: string;
     skip: string;
+    type: string;
+    digestFoot: string;
     chapters: string[];
   };
   blocks: Record<BlockId, string>;
@@ -90,6 +92,7 @@ export const STORY: Record<Lang, StoryCopy> = {
         ["New order", "A5 dot notebook in green, paid at 23:49"],
         ["Stock updated", "Three left in green"],
         ["6 questions answered", "Nobody is waiting for a reply"],
+        ["Supplier order sent", "Twenty more notebooks are on the way"],
       ],
     },
     c: {
@@ -101,11 +104,11 @@ export const STORY: Record<Lang, StoryCopy> = {
       everyNight: "It happens most nights. You never even hear about it.",
       rewind: "Run that night again.",
       rewindSub: "Same night. Same message. This time something is awake.",
-      agentEyebrow: "Inside",
+      agentEyebrow: "The new brain",
       agent: "The agent",
       agentSub: "An AI agent that knows your business. It answers in seconds, at any hour, and then acts: checks the stock, holds the item, sends the link.",
       trace: "What happened behind the answer",
-      faceEyebrow: "Outside",
+      faceEyebrow: "The new face",
       face: "The face",
       faceSub: "And this is where that customer found you. Designed for your business, not poured into a template.",
       morning: "You slept. Your business didn't.",
@@ -115,6 +118,8 @@ export const STORY: Record<Lang, StoryCopy> = {
       ago: "7h ago",
       awake: "AI agent · awake",
       skip: "Skip the story",
+      type: "Message",
+      digestFoot: "Nothing is waiting for you. Good morning.",
       chapters: ["The night", "Again", "The agent", "The face", "Morning"],
     },
     blocks: { brand: "Brand", web: "Website", app: "App", film: "Film", agent: "Agent", mind: "Second brain", flow: "Workflows" },
@@ -179,6 +184,7 @@ export const STORY: Record<Lang, StoryCopy> = {
         ["הזמנה חדשה", "מחברת נקודות A5 בירוק, שולמה ב־23:49"],
         ["המלאי התעדכן", "נשארו שלוש בירוק"],
         ["6 פניות נענו", "אף לקוח לא נשאר בלי תשובה"],
+        ["נשלחה הזמנה לספק", "עוד עשרים מחברות בדרך"],
       ],
     },
     c: {
@@ -190,11 +196,11 @@ export const STORY: Record<Lang, StoryCopy> = {
       everyNight: "זה קורה כמעט כל לילה. ואתם אפילו לא יודעים.",
       rewind: "בואו נחזיר את הלילה אחורה.",
       rewindSub: "אותו לילה. אותה הודעה. רק שהפעם מישהו ער.",
-      agentEyebrow: "מבפנים",
+      agentEyebrow: "המוח החדש",
       agent: "הסוכן",
       agentSub: "סוכן AI שמכיר את העסק שלכם. עונה תוך שניות, בכל שעה, וגם פועל: בודק מלאי, שומר מוצר, שולח קישור.",
       trace: "מה קרה מאחורי הקלעים",
-      faceEyebrow: "מבחוץ",
+      faceEyebrow: "הפנים החדשות",
       face: "הפנים",
       faceSub: "וכאן הלקוחה מצאה אתכם. עיצוב שנתפר לעסק שלכם, לא עוד תבנית.",
       morning: "אתם ישנתם. העסק לא.",
@@ -204,6 +210,8 @@ export const STORY: Record<Lang, StoryCopy> = {
       ago: "לפני 7 שעות",
       awake: "סוכן AI · ער",
       skip: "לדלג על הסיפור",
+      type: "הודעה",
+      digestFoot: "שום דבר לא מחכה לכם. בוקר טוב.",
       chapters: ["הלילה", "שוב", "הסוכן", "הפנים", "בוקר"],
     },
     blocks: { brand: "מותג", web: "אתר", app: "אפליקציה", film: "סרט", agent: "סוכן", mind: "מוח שני", flow: "אוטומציות" },
