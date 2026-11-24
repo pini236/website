@@ -35,7 +35,7 @@ export function Shopfronts({ lang }: { lang: Lang }) {
           {CLIENTS.map((s, i) => (
             <li key={s.id}>
               <button type="button" data-id={s.id} aria-pressed={i === on} onClick={() => pick(i)} onMouseEnter={() => pick(i)}>
-                <b dir="auto">{s.name[lang]}</b>
+                <b>{s.name[lang]}</b>
                 <small>{s.trade[lang]}</small>
               </button>
             </li>
