@@ -105,6 +105,11 @@ export function Street({ lang }: { lang: Lang }) {
               {c.landing[0]}
               <em>{c.landing[1]}</em>
             </h1>
+            {c.landing[2] && (
+              <p className="sub on" style={at(-1, 0.08)}>
+                {c.landing[2]}
+              </p>
+            )}
             <p className="hint on" style={at(-1, 0.04)}>
               {c.scroll}
             </p>

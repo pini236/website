@@ -4,7 +4,7 @@ export type Copy = {
   nav: string;
   other: { label: string; href: string };
   scroll: string;
-  landing: [string, string];
+  landing: [string, string, string?];
   gap: { head: string; beats: string[] };
   face: { head: string; items: string[] };
   lights: { head: string; sub: string; items: string[]; ai: string };
@@ -30,59 +30,63 @@ export const COPY: Record<Lang, Copy> = {
     nav: "Talk to me",
     other: { label: "עברית", href: "/he" },
     scroll: "Scroll",
-    landing: ["You already did the hard part.", "Let's build the rest."],
+    landing: [
+      "Your business is open.",
+      "Online, it still says “opening soon.”",
+      "I'm Pini. I build websites, apps and AI assistants for small businesses. Scroll to see what changes.",
+    ],
     gap: {
-      head: "Your business is open. Online, it still says “opening soon.”",
+      head: "Right now, this is how you look from a phone.",
       beats: [
-        "People look for you on a phone before they find your door.",
-        "They decide in seconds. The first look is all you get.",
-        "And when they do write to you, it's eleven at night and nobody answers.",
+        "Before anyone walks through your door, they look you up.",
+        "They find an old page, a few photos, or nothing. So they choose the place that looked ready.",
+        "And when someone does write to you, it's eleven at night. By the time you answer, they've bought somewhere else.",
       ],
     },
     face: {
-      head: "First, we make it look like what it really is.",
+      head: "First, I make your business look as good as it is.",
       items: [
-        "A name people remember after hearing it once.",
-        "A website that does the selling for you.",
-        "An app that keeps you in your customer's pocket.",
-        "A short film that says about you what you'd never say yourself.",
+        "A name and a look people remember.",
+        "A website that shows what you do and takes the order.",
+        "An app with your name on it, on your customers' phones.",
+        "A short film that shows your work better than you'd ever describe it.",
       ],
     },
     lights: {
-      head: "Then we switch the lights on.",
-      sub: "Behind the new face, a business that answers, remembers and does the dull work by itself.",
+      head: "Then I switch the lights on.",
+      sub: "Behind the new look sits an AI assistant that knows your business. It works the hours you can't.",
       items: [
-        "Every customer gets an answer. At eleven at night too.",
-        "It knows what you know: prices, stock, who ordered what.",
-        "Invoices, reminders, follow-ups. Done before you ask.",
+        "It answers every customer in seconds. At eleven at night too.",
+        "It knows your prices, your stock and who ordered what.",
+        "It sends the invoices, the reminders and the supplier order. You don't have to ask.",
       ],
-      ai: "Yes, it's AI. You won't need to care how. Here's one night.",
+      ai: "You don't need to understand AI to use it. Here is one night at a made-up shop.",
     },
     day: {
       kicker: "That was one night. This is every day after.",
-      next: "Everything you just watched is made of seven blocks. Here they are, side by side.",
+      next: "Everything you just watched is made of seven pieces. You can start with one.",
       lens: "Move your mouse. See what's underneath.",
-      morning: { title: "Morning. Three orders came in overnight.", orders: ["New order · pickup at 9:00", "New order · delivery", "New order · pickup at 10:30"] },
-      noon: { title: "A customer asks about her delivery. Answered in a minute. Not by you.", ask: "Where's my order?", reply: "On its way. About 15 minutes." },
-      supply: { title: "The supplier order went out on its own.", note: "Running low · order sent to supplier" },
-      night: { title: "You're home. The business is still answering.", time: "23:04", ask: "Are you open tomorrow?", reply: "From 7:00. Want me to set something aside for you?" },
-      brain: { head: "Under every window, one brain.", body: "Orders, answers, stock and invoices, all connected. That's what we build." },
+      morning: { title: "You open up. Three orders came in while you slept.", orders: ["New order · pickup at 9:00", "New order · delivery", "New order · pickup at 10:30"] },
+      noon: { title: "A customer asks where her delivery is. She has her answer in a minute. You kept working.", ask: "Where's my order?", reply: "On its way. About 15 minutes." },
+      supply: { title: "Stock is running low. The order to the supplier has already gone out.", note: "Running low · order sent to supplier" },
+      night: { title: "You're home for dinner. The shop is still answering.", time: "23:04", ask: "Are you open tomorrow?", reply: "From 7:00. Want me to set something aside for you?" },
+      brain: { head: "Under every window, one brain.", body: "Orders, answers, stock and invoices, all connected to each other. That is what I build." },
       close: "You're still the heart of it. You're just not the whole staff anymore.",
     },
     who: {
       eyebrow: "Who builds all this",
       head: "One studio. One person.",
       steps: [
-        ["You write to me", "A few lines about your business are enough."],
+        ["You write to me", "Three lines about your business are enough."],
         ["I answer with a plan", "What I'd build first, and what I'd leave out."],
-        ["I build it and switch it on", "And I stay around after opening day."],
+        ["I build it and switch it on", "And I'm still here after opening day."],
       ],
-      body: "I'm Pini. I design it, build it and switch it on myself. You talk to me from the first message to opening day, and after.",
+      body: "I'm Pini. I design, build and run all of this myself. The person you explain your business to is the person who builds it.",
     },
     clients: {
-      eyebrow: "Already on the street",
+      eyebrow: "Not made up",
       head: "Real businesses. Lights on.",
-      body: "Some of the businesses I build for.",
+      body: "Some of the businesses I build for. Pick one.",
       next: "Next on the street",
       nextBody: "Ideas I'd love to build. Not customers. Not yet.",
       concept: "Concept, not a customer",
@@ -90,9 +94,9 @@ export const COPY: Record<Lang, Copy> = {
       write: "Message Pini",
     },
     close: {
-      eyebrow: "Your street, your shop, your turn",
+      eyebrow: "Your turn",
       head: "Tell me about your business.",
-      body: "A short message is enough. I'll tell you honestly what I'd build first, and what I wouldn't.",
+      body: "Three lines are enough: what you do, and what eats your time. I'll tell you honestly what I'd build first, and what I wouldn't bother with.",
       button: "Message Pini",
     },
     foot: { built: "Built by", privacy: "Privacy policy", remove: "Delete my data", contact: "Contact" },

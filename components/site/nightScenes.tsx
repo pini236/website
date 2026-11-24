@@ -73,7 +73,7 @@ export function Night({ t }: { t: StoryCopy }) {
       <div className="hero rv x" style={rv(-2, -1, 0.1, 0.18)}>
         <p className="eyebrow">{COPY.day}</p>
         <h1>
-          {COPY.hook}
+          {COPY.hook}{" "}
           <em>{COPY.hookAccent}</em>
         </h1>
                 <p className="hint">{COPY.hint}</p>
