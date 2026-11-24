@@ -6,7 +6,7 @@ import { sceneProgress, span } from "@/lib/scroll";
 
 const BUILD: [number, number] = [0.02, 0.86];
 // live.mp4 plays the arrival once, then repeats from here
-const LOOP = 8;
+const LOOP = 10.04;
 const at = (a: number, b: number) => ({ "--a": a, "--b": b }) as CSSProperties;
 
 export function Street({ lang }: { lang: Lang }) {
